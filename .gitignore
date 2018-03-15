@@ -1,0 +1,5 @@
+# -------------- custom ignore commands-------------
+# ignore testing folder
+/testing/*
+*.DS_store
+*.pyc
