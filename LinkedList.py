@@ -75,10 +75,3 @@ class LinkedList(object):
 			start = start.get_next()
 		print message
 
-# mylist = LinkedList()
-
-# mylist.add(1,1)
-# mylist.add(1,2)
-# mylist.add(1,3)
-# mylist.printList()
-

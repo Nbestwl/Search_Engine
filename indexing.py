@@ -85,8 +85,8 @@ def postingLists_creation(docs, unique_words):
 
 	return dictionary, postings
 
-
-def main():
+# this is the main function to export
+def indexing():
 	# remove stop words first then stem the words
 	docs = doc_reader()
 	# pre-processing one document at a time
@@ -110,7 +110,3 @@ def main():
 	dictionary, postings = postingLists_creation(processed_docs, unique_words)
 	# testing
 	print_table(dictionary, postings)
-
-
-if __name__ == "__main__":
-	main()

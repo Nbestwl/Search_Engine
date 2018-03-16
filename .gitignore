@@ -1,4 +1,7 @@
 # -------------- custom ignore commands-------------
+# ignore html folder
+/docsnew/*
+
 # ignore testing folder
 /testing/*
 *.DS_store

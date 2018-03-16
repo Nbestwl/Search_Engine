@@ -7,7 +7,7 @@
 from indexing import *
 
 def tf-idf():
-
+	pass
 
 def main():
 	print "start building vector space model..."

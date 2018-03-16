@@ -5,18 +5,44 @@
 # 4. reduce all words down to its stem using its stemmer
 
 from nltk.stem import *
-from nltk.stem.porter import *		#import porter stemmer
-from nltk.corpus import stopwords 		#nltk is the third party library we are using for stop words and stems.
-
-# Shaina's code start here
-
-# HTML tag removal
-
-
-# convert all words to lowercase
+#import porter stemmer
+from nltk.stem.porter import *
+#nltk is the third party library we are using for stop words and stems.
+from nltk.corpus import stopwords
+import os
+# imported for tag removal
+import re
 
 
-# ------------------------------Lei's code start here------------------------------
+# helper function for stripping all html tags
+def cleanhtml(raw_html):
+	cleantext = re.sub(r'<[^>]*?>|<script[^script>]+>', '', raw_html)
+	return cleantext
+
+# remove all html tags from a targeted firectory
+def tag_removal():
+	print "\nstart removing tags...\n"
+	# read in the sample files directory
+	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/docsnew/'
+	# initilize an empty list to store all testing strings
+	docs = list()
+	# loop through all test files in the dir and assign file contents to a variable
+	for subdir, dirs, files in os.walk(rootdir):
+		file_path = os.path.join(subdir, files[1])
+		with open(file_path, "r") as myfile:
+			doc = myfile.read()
+			# add the document to docs one at a time
+			docs.append(cleanhtml(doc))
+
+
+	# return the list containing all documents
+	return docs
+
+# converting all to lowercase
+def case_convention():
+	print "\nstart converting to lowercases...\n"
+
+
 # step 3: remove all stop words from documents
 def stopword_removal(sentence):
 	# create a stop word instance
@@ -35,16 +61,3 @@ def stemmer(sentence):
 		sentence_stemmed.append(ps.stem(words))
 	# return the stemmed sentence
 	return sentence_stemmed
-
-# def main():
-# 	# this is the example sentence, can be replaced later with stripped html tag documents
-# 	sentence = "EECS graduates work everywhere from Fortune 500 companies and small startups to research organizations and academic. Organizations value our students for their strong foundation, hand-on laboratory experience and critical thinking skills. Dedicated faculty members mentor students and help them prepare for future success. Advanced courses and research projects sharpen students' problem solving and communication skills"
-# 	# remove stop words first then stem the words
-# 	words_no_stopwords = stopword_removal(sentence)
-# 	result = stemmer(words_no_stopwords)
-
-# 	# testing
-# 	print result
-
-# if __name__ == "__main__":
-# 	main()
