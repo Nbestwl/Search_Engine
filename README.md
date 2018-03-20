@@ -4,7 +4,7 @@ Information Retrieval (Spring 2018)
 
 ## Todo lists
 #### 1.Document processing and indexing
-- [ ] Pre-process the documents by removing all HTML tags and convert everything into lower case.
+- [x] Pre-process the documents by removing all HTML tags and convert everything into lower case.
 - [x] Implement a stop list and a stemmer to pre-process the documents
 - [x] Build an inverted index (including dictionary and posting lists) for the documents(Please make sure to keep all the frequency information)
 
