@@ -64,6 +64,15 @@ class LinkedList(object):
 				cur_node = cur_node.get_next()
 		return False
 
+	def find(self, index):
+		cur_node = self.root
+		while cur_node:
+			if cur_node.get_doc() == index:
+				return cur_node.get_freq()
+			else:
+				cur_node = cur_node.get_next()
+		return False
+
 	def printList(self):
 		message = ''
 		start = self.root

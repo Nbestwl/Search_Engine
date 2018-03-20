@@ -5,9 +5,12 @@ from indexing import *
 
 def main():
 	print "start pre-processing html tags..."
-	processed_html = tag_removal()
+	print "start buidling dictionary and postings"
+	# processed_html = tag_removal()
 	# create dictionary and postings
-	dictionary, postings = indexing(processed_html)
+	docs = doc_reader()
+	print docs
+	dictionary, postings = indexing(docs)
 	# testing results
 	print_table(dictionary, postings)
 
