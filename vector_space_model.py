@@ -6,7 +6,9 @@
 
 from indexing import *
 from decimal import *
+
 from math import log10
+import numpy as np
 
 
 def tf_idf():
@@ -31,20 +33,19 @@ def tf_idf():
 				dic_row[doc_num] = 0
 		tf_idf.append(dic_row.copy())
 
-	return tf_idf
+	# this dictionary will store all document vector length
+	vector_length = {}
 
+	for row in range(0, len(tf_idf)):
+		# for i in range()
+		print tf_idf[row][0]
 
-# def vector_cal(tf_idf):
-# 	vector_length = {}
-
-# 	for row in range(0, len(tf_idf)):
-# 		for i
 
 
 
 def main():
 	print "start building vector space model..."
-	print tf_idf()
+	tf_idf()
 
 
 if __name__ == '__main__':
