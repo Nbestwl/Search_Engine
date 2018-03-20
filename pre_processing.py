@@ -14,50 +14,65 @@ import os
 import re
 
 
-# helper function for stripping all html tags
-def cleanhtml(raw_html):
-	cleantext = re.sub(r'<[^>]*?>|<script[^script>]+>', '', raw_html)
-	return cleantext
+def process_html(text):
+	# remove everything within script and css tags
+	scripts = re.compile(r'<(script).*?</\1>(?s)')
+	css = re.compile(r'<style.*?/style>')
+	# remove all html tags
+	tags = re.compile(r'<.*?>')
+
+	# replace all tags with a single space
+	text = scripts.sub(' ', text)
+	text = css.sub(' ', text)
+	text = tags.sub(' ', text)
+	# remove all \n and \t in the document
+	text = re.sub(r'\n', '', text)
+	text = re.sub(r'\t', '', text)
+	# remove all non word elements
+	non_words = re.compile('[^a-zA-Z]')
+	text = non_words.sub(' ', text)
+
+	# converft multiple spaces into a single space
+	# remove all single letter
+	# convert to lowercase
+	return ' '.join([w for w in text.split() if len(w)>1]).lower()
+
 
 # remove all html tags from a targeted firectory
 def tag_removal():
-	print "\nstart removing tags...\n"
 	# read in the sample files directory
 	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/docsnew/'
 	# initilize an empty list to store all testing strings
 	docs = list()
 	# loop through all test files in the dir and assign file contents to a variable
 	for subdir, dirs, files in os.walk(rootdir):
-		file_path = os.path.join(subdir, files[1])
-		with open(file_path, "r") as myfile:
-			doc = myfile.read()
-			# add the document to docs one at a time
-			docs.append(cleanhtml(doc))
-
+		for file in files:
+			file_path = os.path.join(subdir, file)
+			with open(file_path, "r") as myfile:
+				doc = myfile.read()
+				# add the document to docs one at a time
+				docs.append(process_html(doc))
 
 	# return the list containing all documents
 	return docs
 
-# converting all to lowercase
-def case_convention():
-	print "\nstart converting to lowercases...\n"
-
 
 # step 3: remove all stop words from documents
-def stopword_removal(sentence):
+def stopword_removal(doc):
 	# create a stop word instance
 	stopWords = set(stopwords.words('english'))
-	# strips all stop words from the sentence
-	words_after_removal =  [i for i in sentence.lower().split() if i not in stopWords]
-	# return the sentence after stop words removal
+	# strips all stop words from the document
+	words_after_removal =  [i for i in doc.lower().split() if i not in stopWords]
+	# return the document after stop words removal
 	return words_after_removal
 
+
 # step 4: implement a stemmer
-def stemmer(sentence):
+def stemmer(doc):
 	ps = PorterStemmer()
 	sentence_stemmed = []
-	# apply porter stemmer to all words in the sentence
-	for words in sentence:
+	# apply porter stemmer to all words in the document
+	for words in doc:
 		sentence_stemmed.append(ps.stem(words))
-	# return the stemmed sentence
+	# return the stemmed document
 	return sentence_stemmed

@@ -86,9 +86,9 @@ def postingLists_creation(docs, unique_words):
 	return dictionary, postings
 
 # this is the main function to export
-def indexing():
+def indexing(docs):
 	# remove stop words first then stem the words
-	docs = doc_reader()
+	# docs = doc_reader()
 	# pre-processing one document at a time
 	processed_docs, doc_list, unique_words, flat_list = [], [], [], []
 
@@ -108,5 +108,5 @@ def indexing():
 	[unique_words.append(x) for x in doc_list if x not in unique_words]
 	# create a ditionary and a postings list for pre-processed documents
 	dictionary, postings = postingLists_creation(processed_docs, unique_words)
-	# testing
-	print_table(dictionary, postings)
+
+	return  dictionary, postings
