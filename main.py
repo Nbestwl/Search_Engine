@@ -8,12 +8,13 @@ def main():
 
 	print "start pre-processing html tags..."
 	docs = tag_removal()
-	print docs
+
+	# print docs
 	# filenames = directory_info()
 	# progress(filenames)
 
 	# print "start buidling dictionary and postings"
-	# # create dictionary and postings
+	# # create dictionary and postingsb
 	# docs = doc_reader()
 	# print docs
 	# dictionary, postings = indexing(docs)

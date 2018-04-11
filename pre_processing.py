@@ -4,6 +4,7 @@
 # 3. implement a stop list to remove all stop words
 # 4. reduce all words down to its stem using its stemmer
 
+import sys, time
 #import porter stemmer
 from stemming.porter2 import stem
 #nltk is the third party library we are using for stop words and stems.
@@ -11,7 +12,6 @@ from stop_words import get_stop_words
 import os
 # imported for tag removal
 import re
-import sys
 
 
 def process_html(text):
@@ -38,6 +38,17 @@ def process_html(text):
 	return ' '.join([w for w in text.split() if len(w)>1]).lower()
 
 
+def progressbar(iteration, total, prefix, suffix, length, fill = '*'):
+	percent = ("{0:." + str(1) + "f}").format(100 * (iteration / float(total)))
+	filledLength = int(length * iteration // total)
+	bar = fill * filledLength + '-' * (length - filledLength)
+
+	sys.stdout.write('%s |%s| %s%% %s\r' % (prefix, bar, percent, suffix))
+	sys.stdout.flush()
+	if iteration == total:
+		sys.stdout.write('%s |%s| %s%% %s\r' % (prefix, bar, percent, 'complete'))
+		sys.stdout.flush()
+
 # remove all html tags from a targeted firectory
 def tag_removal():
 	# read in the sample files directory
@@ -47,15 +58,16 @@ def tag_removal():
 	i = 0
 	# loop through all test files in the dir and assign file contents to a variable
 	for subdir, dirs, files in os.walk(rootdir):
-		for file in files:
-			i += 1
+		total = len(files)
+		# progressbar(0, total, prefix = 'Progress:', suffix = 'none', length = 50)
+		for i, file in enumerate(files):
 			file_path = os.path.join(subdir, file)
 			with open(file_path, "r") as myfile:
 				doc = myfile.read()
 				# add the document to docs one at a time
 				docs.append(process_html(doc))
-				sys.stdout.write("\r%d%% %s" %(i, file))
-		    	sys.stdout.flush()
+				progressbar(i + 1, total, prefix = 'Progress:', suffix = file, length = 50)
+
 	return docs
 
 
