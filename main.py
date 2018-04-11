@@ -3,22 +3,15 @@ from pre_processing import *
 from indexing import *
 
 def main():
-	# initialization
-	filenames = list()
+	print "\nstart pre-processing html tags...\n"
+	docs, filenames = tag_removal()
 
-	print "start pre-processing html tags..."
-	docs = tag_removal()
-
-	# print docs
-	# filenames = directory_info()
-	# progress(filenames)
-
-	# print "start buidling dictionary and postings"
-	# # create dictionary and postingsb
+	print "\nstart buidling dictionary and postings\n"
+	# create dictionary and postingsb
 	# docs = doc_reader()
 	# print docs
-	# dictionary, postings = indexing(docs)
-	# # testing results
+	dictionary, postings = indexing(docs, filenames)
+	# testing results
 	# print_table(dictionary, postings)
 
 

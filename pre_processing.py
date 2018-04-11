@@ -45,9 +45,6 @@ def progressbar(iteration, total, prefix, suffix, length, fill = '*'):
 
 	sys.stdout.write('%s |%s| %s%% %s\r' % (prefix, bar, percent, suffix))
 	sys.stdout.flush()
-	if iteration == total:
-		sys.stdout.write('%s |%s| %s%% %s\r' % (prefix, bar, percent, 'complete'))
-		sys.stdout.flush()
 
 # remove all html tags from a targeted firectory
 def tag_removal():
@@ -55,11 +52,10 @@ def tag_removal():
 	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/docsnew/'
 	# initilize an empty list to store all testing strings
 	docs = list()
-	i = 0
+	filenames = list()
 	# loop through all test files in the dir and assign file contents to a variable
 	for subdir, dirs, files in os.walk(rootdir):
 		total = len(files)
-		# progressbar(0, total, prefix = 'Progress:', suffix = 'none', length = 50)
 		for i, file in enumerate(files):
 			file_path = os.path.join(subdir, file)
 			with open(file_path, "r") as myfile:
@@ -67,8 +63,9 @@ def tag_removal():
 				# add the document to docs one at a time
 				docs.append(process_html(doc))
 				progressbar(i + 1, total, prefix = 'Progress:', suffix = file, length = 50)
+				filenames.append(file)
 
-	return docs
+	return docs, filenames
 
 
 # step 3: remove all stop words from documents

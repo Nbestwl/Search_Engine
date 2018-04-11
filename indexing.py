@@ -5,7 +5,7 @@
 # 3.testing it within a folder that contains a number of files
 
 import os
-from pre_processing import *
+from pre_processing import progressbar, tag_removal, stopword_removal, stemmer
 from LinkedList import LinkedList
 
 # create a testing folder that contains files, and be able to load in the text to the pre-processing functions
@@ -62,7 +62,8 @@ def postingLists_creation(docs, unique_words):
 	unique_words.sort()
 
 	# print unique_words
-	for unique_word in unique_words:
+	for i, unique_word in enumerate(unique_words):
+		total = len(unique_words)
 		row["term"] = unique_word
 		row["doc_freq"] = 0
 		row["term_freq"] = 0
@@ -82,22 +83,26 @@ def postingLists_creation(docs, unique_words):
 		# append posting list and dictionary for each term
 		postings.append(posting)
 		dictionary.append(row.copy())
+		progressbar(i + 1, total, prefix = 'Progress:', suffix = unique_words[i], length = 50)
 
 	return dictionary, postings
 
 # this is the main function to export
-def indexing(docs):
+def indexing(docs, files):
 	# remove stop words first then stem the words
 	# docs = doc_reader()
 	# pre-processing one document at a time
 	processed_docs, doc_list, unique_words, flat_list = [], [], [], []
 
-	for doc in docs:
+	for i, doc in enumerate(docs):
+		total = len(docs)
 		# remove stopwords
 		doc_no_stopwords = stopword_removal(doc)
 		# stemming the words
 		doc_stemmer = stemmer(doc_no_stopwords)
 		processed_docs.append(doc_stemmer)
+		# print out the progress
+		progressbar(i + 1, total, prefix = 'Progress:', suffix = files[i], length = 50)
 
 	# load in all docs into a list structure and flat out the nested list
 	for doc in processed_docs:
@@ -107,6 +112,7 @@ def indexing(docs):
 	# find all the words without duplicates
 	[unique_words.append(x) for x in doc_list if x not in unique_words]
 	# create a ditionary and a postings list for pre-processed documents
+	print "\ncreating dictionary and posting lists..."
 	dictionary, postings = postingLists_creation(processed_docs, unique_words)
 
 	return  dictionary, postings
