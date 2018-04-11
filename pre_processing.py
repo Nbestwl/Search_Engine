@@ -4,11 +4,12 @@
 # 3. implement a stop list to remove all stop words
 # 4. reduce all words down to its stem using its stemmer
 
-from nltk.stem import *
 #import porter stemmer
-from nltk.stem.porter import *
+from stemming.porter2 import stem
 #nltk is the third party library we are using for stop words and stems.
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
+from stop_words import get_stop_words
+
 import os
 # imported for tag removal
 import re
@@ -60,7 +61,7 @@ def tag_removal():
 # step 3: remove all stop words from documents
 def stopword_removal(doc):
 	# create a stop word instance
-	stopWords = set(stopwords.words('english'))
+	stopWords = get_stop_words('en')
 	# strips all stop words from the document
 	words_after_removal =  [i for i in doc.lower().split() if i not in stopWords]
 	# return the document after stop words removal
@@ -69,10 +70,18 @@ def stopword_removal(doc):
 
 # step 4: implement a stemmer
 def stemmer(doc):
-	ps = PorterStemmer()
 	sentence_stemmed = []
 	# apply porter stemmer to all words in the document
 	for words in doc:
-		sentence_stemmed.append(ps.stem(words))
+		sentence_stemmed.append(stem(words))
 	# return the stemmed document
 	return sentence_stemmed
+
+
+# def main():
+# 	doc = "factionally"
+# 	print stemmer(doc)
+
+
+# if __name__ == '__main__':
+# 	main()

@@ -6,7 +6,7 @@ from indexing import *
 def main():
 	print "start pre-processing html tags..."
 	print "start buidling dictionary and postings"
-	# processed_html = tag_removal()
+	processed_html = tag_removal()
 	# create dictionary and postings
 	docs = doc_reader()
 	print docs
