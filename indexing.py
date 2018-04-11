@@ -39,14 +39,14 @@ def print_table(dictionary, postings):
 			width = len(row['term'])
 
 	# start printing dictionary
-	print "-------------Dictionary-------------"
+	print "\n\n-------------Dictionary-------------"
 	# using the length of the longest string as the column width
 	print "{0:<{3}} {1:<{4}} {2:<{5}}".format('Term','Doc_freq','Term_freq', width, 10, 10)
 	for row in dictionary:
 		print "{0:<{3}} {1:<{4}} {2:<{5}}".format(row["term"], row["doc_freq"], row["term_freq"], width, 10, 10)
 
 	# start printing posting lists
-	print "-------------Postings-------------"
+	print "\n\n-------------Postings-------------"
 	# print posting lists
 	for posting in postings:
 		posting.printList()
@@ -112,7 +112,7 @@ def indexing(docs, files):
 	# find all the words without duplicates
 	[unique_words.append(x) for x in doc_list if x not in unique_words]
 	# create a ditionary and a postings list for pre-processed documents
-	print "\ncreating dictionary and posting lists..."
+	print "\n\nPopulating dictionary and posting lists..."
 	dictionary, postings = postingLists_creation(processed_docs, unique_words)
 
 	return  dictionary, postings

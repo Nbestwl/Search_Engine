@@ -4,21 +4,17 @@
 # 2.pre-process the query and calc the length of query vector
 # 3.compute the tf-idf similarity scores
 
-from indexing import *
+from indexing import doc_reader, indexing
 from decimal import *
-
 from math import log10
 import numpy as np
 
 
-def tf_idf():
+def tf_idf(dictionary, postings, filenames):
 	idf, tf_idf, dic_row = [], [], {}
-	# get the document list
-	docs = doc_reader()
 	# get the size of the list, which is N in idf
-	N = len(docs)
+	N = len(filenames)
 	# calculate idf
-	dictionary, postings = indexing(docs)
 	for row in dictionary:
 		df = row['term_freq']
 		idf.append(log10(Decimal(N)/Decimal(df)))
@@ -41,10 +37,10 @@ def tf_idf():
 		print tf_idf[row][0]
 
 
-def main():
-	print "start building vector space model..."
-	tf_idf()
+# def main():
+# 	print "start building vector space model..."
+# 	tf_idf()
 
 
-if __name__ == '__main__':
-	main()
+# if __name__ == '__main__':
+# 	main()

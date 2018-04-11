@@ -46,18 +46,20 @@ def progressbar(iteration, total, prefix, suffix, length, fill = '*'):
 	sys.stdout.write('%s |%s| %s%% %s\r' % (prefix, bar, percent, suffix))
 	sys.stdout.flush()
 
+
 # remove all html tags from a targeted firectory
 def tag_removal():
 	# read in the sample files directory
-	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/docsnew/'
+	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/testing/'
 	# initilize an empty list to store all testing strings
 	docs = list()
 	filenames = list()
 	# loop through all test files in the dir and assign file contents to a variable
-	for subdir, dirs, files in os.walk(rootdir):
+	for root, dirs, files in os.walk(rootdir):
 		total = len(files)
-		for i, file in enumerate(files):
-			file_path = os.path.join(subdir, file)
+		# sort the file name in order
+		for i, file in enumerate(sorted(files)):
+			file_path = os.path.join(root, file)
 			with open(file_path, "r") as myfile:
 				doc = myfile.read()
 				# add the document to docs one at a time
