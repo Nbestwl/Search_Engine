@@ -7,12 +7,11 @@
 #import porter stemmer
 from stemming.porter2 import stem
 #nltk is the third party library we are using for stop words and stems.
-# from nltk.corpus import stopwords
 from stop_words import get_stop_words
-
 import os
 # imported for tag removal
 import re
+import sys
 
 
 def process_html(text):
@@ -45,16 +44,18 @@ def tag_removal():
 	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/docsnew/'
 	# initilize an empty list to store all testing strings
 	docs = list()
+	i = 0
 	# loop through all test files in the dir and assign file contents to a variable
 	for subdir, dirs, files in os.walk(rootdir):
 		for file in files:
+			i += 1
 			file_path = os.path.join(subdir, file)
 			with open(file_path, "r") as myfile:
 				doc = myfile.read()
 				# add the document to docs one at a time
 				docs.append(process_html(doc))
-
-	# return the list containing all documents
+				sys.stdout.write("\r%d%% %s" %(i, file))
+		    	sys.stdout.flush()
 	return docs
 
 
@@ -77,11 +78,3 @@ def stemmer(doc):
 	# return the stemmed document
 	return sentence_stemmed
 
-
-# def main():
-# 	doc = "factionally"
-# 	print stemmer(doc)
-
-
-# if __name__ == '__main__':
-# 	main()

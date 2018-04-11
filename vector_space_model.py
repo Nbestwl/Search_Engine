@@ -41,8 +41,6 @@ def tf_idf():
 		print tf_idf[row][0]
 
 
-
-
 def main():
 	print "start building vector space model..."
 	tf_idf()
