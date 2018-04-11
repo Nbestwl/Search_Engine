@@ -12,7 +12,7 @@ from LinkedList import LinkedList
 # return a list of testing strings
 def doc_reader():
 	# read in the sample files directory
-	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/testing'
+	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/docsnew'
 	# initilize an empty list to store all testing strings
 	docs = list()
 	# loop through all test files in the dir and assign file contents to a variable

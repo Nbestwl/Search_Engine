@@ -10,31 +10,45 @@ from math import log10
 import numpy as np
 
 
+# creates a TF_IDF weight matrix using pre-processed dictionary and posting lists
 def tf_idf(dictionary, postings, filenames):
-	idf, tf_idf, dic_row = [], [], {}
-	# get the size of the list, which is N in idf
+	# get the number of the documents, which is N in idf
 	N = len(filenames)
+	rows = len(dictionary)
+
+	# initialize weight matrix with 0s
+	weight_matrix = np.zeros(shape=(rows, N + 1), dtype=np.int)
 	# calculate idf
+	row_tracker = 0
 	for row in dictionary:
-		df = row['term_freq']
-		idf.append(log10(Decimal(N)/Decimal(df)))
-	# build the weight matrix
-	for row in range(0, len(dictionary)):
-		dic_row['term'] = dictionary[row]['term']
-		postinglist = postings[row]
-		for doc_num in range(0, N):
-			if postinglist.find(doc_num):
-				dic_row[doc_num] = postinglist.find(doc_num) * idf[row]
-			else:
-				dic_row[doc_num] = 0
-		tf_idf.append(dic_row.copy())
+		df = row['doc_freq']
+		weight_matrix[row_tracker, 0] = df
+		# scan through posting lists to fill in the
+		# for posting in postings:
 
-	# this dictionary will store all document vector length
-	vector_length = {}
+		row_tracker += 1
 
-	for row in range(0, len(tf_idf)):
-		# for i in range()
-		print tf_idf[row][0]
+
+
+	print weight_matrix
+		# idf.append(log10(Decimal(N)/Decimal(df)))
+	# # build the weight matrix
+	# for row in range(0, len(dictionary)):
+	# 	dic_row['term'] = dictionary[row]['term']
+	# 	postinglist = postings[row]
+	# 	for doc_num in range(0, N):
+	# 		if postinglist.find(doc_num):
+	# 			dic_row[doc_num] = postinglist.find(doc_num) * idf[row]
+	# 		else:
+	# 			dic_row[doc_num] = 0
+	# 	tf_idf.append(dic_row.copy())
+
+	# # this dictionary will store all document vector length
+	# vector_length = {}
+
+	# for row in range(0, len(tf_idf)):
+	# 	# for i in range()
+	# 	print tf_idf[row][0]
 
 
 # def main():

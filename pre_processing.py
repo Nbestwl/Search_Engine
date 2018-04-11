@@ -50,7 +50,7 @@ def progressbar(iteration, total, prefix, suffix, length, fill = '*'):
 # remove all html tags from a targeted firectory
 def tag_removal():
 	# read in the sample files directory
-	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/testing/'
+	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/docsnew/'
 	# initilize an empty list to store all testing strings
 	docs = list()
 	filenames = list()
