@@ -9,7 +9,7 @@ Information Retrieval (Spring 2018)
 - [x] Build an inverted index (including dictionary and posting lists) for the documents(Please make sure to keep all the frequency information)
 
 #### 2.Vector Space model
-- [ ] 1.calculate the length of the corresponding doc vector for each doc
+- [x] 1.calculate the length of the corresponding doc vector for each doc
 - [ ] 2.pre-process the query and calc the length of query vector
 - [ ] 3.compute the tf-idf similarity scores
 

@@ -11,6 +11,13 @@ from math import log10
 import numpy as np
 
 
+# this is the helper function for calculating the vector length
+def vector_length_calc(doc_vec):
+	total = 0
+	for weight in doc_vec:
+		total += weight ** 2
+	return total ** 0.5
+
 # creates a TF_IDF weight matrix using pre-processed dictionary and posting lists
 def tf_idf(dictionary, postings, filenames):
 	# get the number of the documents, which is N in idf
@@ -34,31 +41,17 @@ def tf_idf(dictionary, postings, filenames):
 			else:
 				weight_matrix[i, j + 1] = 0
 
+	# return the tf-idf weight matrix
 	print weight_matrix
-		# idf.append(log10(Decimal(N)/Decimal(df)))
-	# # build the weight matrix
-	# for row in range(0, len(dictionary)):
-	# 	dic_row['term'] = dictionary[row]['term']
-	# 	postinglist = postings[row]
-	# 	for doc_num in range(0, N):
-	# 		if postinglist.find(doc_num):
-	# 			dic_row[doc_num] = postinglist.find(doc_num) * idf[row]
-	# 		else:
-	# 			dic_row[doc_num] = 0
-	# 	tf_idf.append(dic_row.copy())
-
-	# # this dictionary will store all document vector length
-	# vector_length = {}
-
-	# for row in range(0, len(tf_idf)):
-	# 	# for i in range()
-	# 	print tf_idf[row][0]
+	return weight_matrix
 
 
-# def main():
-# 	print "start building vector space model..."
-# 	tf_idf()
+# calculating vector length for each document
+def vector_length(weight_matrix):
+	doc_vec_length_list = list()
+	for i in range(1, weight_matrix.shape[1]):
+		vec_len = vector_length_calc(weight_matrix[:, i])
+		doc_vec_length_list.append(vec_len)
 
+	return doc_vec_length_list
 
-# if __name__ == '__main__':
-# 	main()
