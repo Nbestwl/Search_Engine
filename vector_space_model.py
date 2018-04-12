@@ -55,3 +55,14 @@ def vector_length(weight_matrix):
 
 	return doc_vec_length_list
 
+
+# pre-processing the query
+def query_processing(query, dictionary, weight_matrix):
+	query_weight = list()
+	for word in query.split():
+		for i in range(len(dictionary)):
+			term = dictionary[i]['term']
+			if word == term:
+				query_weight.append(weight_matrix[i, 0])
+
+	return query_weight
