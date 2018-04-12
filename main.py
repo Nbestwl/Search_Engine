@@ -9,8 +9,6 @@ def main():
 
 	print "\n\nstart buidling dictionary and postings"
 	# create dictionary and postingsb
-	docs = doc_reader()
-	# print docs
 	dictionary, postings = indexing(docs, filenames)
 	# testing results
 	print_table(dictionary, postings)

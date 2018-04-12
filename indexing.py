@@ -8,25 +8,6 @@ import os
 from pre_processing import progressbar, tag_removal, stopword_removal, stemmer
 from LinkedList import LinkedList
 
-# create a testing folder that contains files, and be able to load in the text to the pre-processing functions
-# return a list of testing strings
-def doc_reader():
-	# read in the sample files directory
-	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/testing/'
-	# initilize an empty list to store all testing strings
-	docs = list()
-	# loop through all test files in the dir and assign file contents to a variable
-	for subdir, dirs, files in os.walk(rootdir):
-	    for file in files:
-	        file_path = os.path.join(subdir, file)
-	        with open(file_path, "r") as myfile:
-	        	doc = myfile.read()
-	        	# add the document to docs one at a time
-	        	docs.append(doc)
-
-	# return the list containing all documents
-	return docs
-
 
 # print a table for dictionary and be able to adjust the width of term column
 # print posting lists according to terms
