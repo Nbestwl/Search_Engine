@@ -59,7 +59,7 @@ def vector_length(weight_matrix):
 # pre-processing the query
 def query_processing(query, dictionary, weight_matrix):
 	query_weight = list()
-	for word in query.split():
+	for word in query:
 		for i in range(len(dictionary)):
 			term = dictionary[i]['term']
 			if word == term:
