@@ -5,6 +5,7 @@
 # 3.compute the tf-idf similarity scores
 
 from indexing import doc_reader, indexing
+from LinkedList import *
 from decimal import *
 from math import log10
 import numpy as np
@@ -19,16 +20,17 @@ def tf_idf(dictionary, postings, filenames):
 	# initialize weight matrix with 0s
 	weight_matrix = np.zeros(shape=(rows, N + 1), dtype=np.int)
 	# calculate idf
-	row_tracker = 0
-	for row in dictionary:
-		df = row['doc_freq']
-		weight_matrix[row_tracker, 0] = df
-		# scan through posting lists to fill in the
-		# for posting in postings:
-
-		row_tracker += 1
-
-
+	for i in range(len(dictionary)):
+		df = dictionary[i]['doc_freq']
+		weight_matrix[i, 0] = df
+		# scan through posting lists to load in the term freq
+		for j in range(N):
+			# the term exists in the doc then load in the term freq
+			if postings[i].find(j):
+				weight_matrix[i, j + 1] = postings[i].find(j)
+			# it will be 0 if it doesn't exist
+			else:
+				weight_matrix[i, j + 1] = 0
 
 	print weight_matrix
 		# idf.append(log10(Decimal(N)/Decimal(df)))
