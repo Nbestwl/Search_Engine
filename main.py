@@ -16,20 +16,14 @@ def main():
 	print "\n\nstart building vector space model..."
 	weight_matrix = tf_idf(dictionary, postings, filenames)
 
-	print "\n\ncalculating document vector length..."
-	doc_vec_length_list = vector_length(weight_matrix)
-	print doc_vec_length_list
-
 	print "\n\nquery vector length calculation..."
-	query = "is silver"
+	query = "Truck arrived damaged"
 
 	processed_query = stopword_removal(query)
 	processed_query = stemmer(processed_query)
 
 	query_weight = query_processing(processed_query, dictionary, weight_matrix)
-	# print query_weight
 	query_vec_length = vector_length_calc(query_weight)
-	# print query_vec_length
 
 if __name__ == '__main__':
 	main()

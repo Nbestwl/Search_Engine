@@ -18,6 +18,10 @@ def vector_length_calc(doc_vec):
 		total += weight ** 2
 	return total ** 0.5
 
+def sim(d1, d2):
+	result = map(lambda n1, n2: n1 * n2, d1, d2)
+	return sum(result)
+
 # creates a TF_IDF weight matrix using pre-processed dictionary and posting lists
 def tf_idf(dictionary, postings, filenames):
 	# get the number of the documents, which is N in idf
@@ -60,6 +64,7 @@ def vector_length(weight_matrix):
 def query_processing(query, dictionary, weight_matrix):
 	# creates a list for document candidate
 	relevant_doc = list()
+	normalized_weight = list()
 
 	query_weight = [0] * len(dictionary)
 	# construct the query vector
@@ -70,12 +75,16 @@ def query_processing(query, dictionary, weight_matrix):
 
 	# identify all the document candidates
 	for col in range(weight_matrix[:, 1:].shape[1]):
-		result = map(lambda n1, n2: n1 * n2, weight_matrix[:,col + 1], query_weight)
-		relevance = sum(result)
+		# normalize the weight matrix
+		normalized_weight = weight_matrix[:,col + 1] / vector_length(weight_matrix)[col]
+
+		# calculate the cosine similarity
+		relevance = sim(normalized_weight, query_weight)
 		# if the result does not contain all 0's then it is a relevant doc
-		if relevance != 0:
-			relevant_doc.append(col)
+		relevant_doc.append(relevance)
 
 	print relevant_doc
+	# normalized_weight = np.array(normalized_weight)
+	# print "normalized_weight", normalized_weight
 
 	return query_weight
