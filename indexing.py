@@ -70,9 +70,7 @@ def postingLists_creation(docs, unique_words):
 
 # this is the main function to export
 def indexing(docs, files):
-	# remove stop words first then stem the words
-	# docs = doc_reader()
-	# pre-processing one document at a time
+	# variable initialization
 	processed_docs, doc_list, unique_words, flat_list = [], [], [], []
 
 	for i, doc in enumerate(docs):

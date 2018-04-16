@@ -17,7 +17,7 @@ def main():
 	weight_matrix = tf_idf(dictionary, postings, filenames)
 
 	print "\n\nquery vector length calculation..."
-	query = "Truck arrived damaged"
+	query = "gold silver truck"
 
 	processed_query = stopword_removal(query)
 	processed_query = stemmer(processed_query)
