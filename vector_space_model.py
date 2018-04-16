@@ -58,11 +58,24 @@ def vector_length(weight_matrix):
 
 # pre-processing the query
 def query_processing(query, dictionary, weight_matrix):
-	query_weight = list()
+	# creates a list for document candidate
+	relevant_doc = list()
+
+	query_weight = [0] * len(dictionary)
+	# construct the query vector
 	for word in query:
-		for i in range(len(dictionary)):
-			term = dictionary[i]['term']
-			if word == term:
-				query_weight.append(weight_matrix[i, 0])
+		for index, item in enumerate(dictionary):
+		    if word == item['term']:
+        		query_weight[index] = weight_matrix[index, 0]
+
+	# identify all the document candidates
+	for col in range(weight_matrix[:, 1:].shape[1]):
+		result = map(lambda n1, n2: n1 * n2, weight_matrix[:,col + 1], query_weight)
+		relevance = sum(result)
+		# if the result does not contain all 0's then it is a relevant doc
+		if relevance != 0:
+			relevant_doc.append(col)
+
+	print relevant_doc
 
 	return query_weight

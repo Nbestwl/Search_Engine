@@ -21,15 +21,15 @@ def main():
 	print doc_vec_length_list
 
 	print "\n\nquery vector length calculation..."
-	query = " is silver is is truck"
+	query = "is silver"
 
 	processed_query = stopword_removal(query)
 	processed_query = stemmer(processed_query)
 
 	query_weight = query_processing(processed_query, dictionary, weight_matrix)
-	print query_weight
+	# print query_weight
 	query_vec_length = vector_length_calc(query_weight)
-	print query_vec_length
+	# print query_vec_length
 
 if __name__ == '__main__':
 	main()

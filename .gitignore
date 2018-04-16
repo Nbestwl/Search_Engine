@@ -6,3 +6,4 @@
 /testing/*
 *.DS_store
 *.pyc
+*.txt
