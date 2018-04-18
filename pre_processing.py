@@ -14,6 +14,11 @@ import os
 import re
 
 
+"""
+	pre: text(a list of strings)
+	post: remove all the html tags
+	return: a tag removed document
+"""
 def process_html(text):
 	# remove everything within script and css tags
 	scripts = re.compile(r'<(script).*?</\1>(?s)')
@@ -38,6 +43,11 @@ def process_html(text):
 	return ' '.join([w for w in text.split() if len(w)>1]).lower()
 
 
+"""
+	pre: the current iteration, total iterations, prefix, suffix, length of the bar, fill
+	post: construct a progress bar and show the percentage of the progress
+	return: NONE
+"""
 def progressbar(iteration, total, prefix, suffix, length, fill = '*'):
 	percent = ("{0:." + str(1) + "f}").format(100 * (iteration / float(total)))
 	filledLength = int(length * iteration // total)
@@ -47,7 +57,11 @@ def progressbar(iteration, total, prefix, suffix, length, fill = '*'):
 	sys.stdout.flush()
 
 
-# remove all html tags from a targeted firectory
+"""
+	pre: NONE
+	post: remove all html tags from a targeted firectory
+	return: a list of all tag removed docs, a list of filenames
+"""
 def tag_removal():
 	# read in the sample files directory
 	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/testing/'
@@ -70,7 +84,11 @@ def tag_removal():
 	return docs, filenames
 
 
-# step 3: remove all stop words from documents
+"""
+	pre: a document
+	post: step 3: remove all stop words from documents
+	return: a doc with no stopwords
+"""
 def stopword_removal(doc):
 	# create a stop word instance
 	stopWords = get_stop_words('en')
@@ -80,7 +98,11 @@ def stopword_removal(doc):
 	return words_after_removal
 
 
-# step 4: implement a stemmer
+"""
+	pre: a document
+	post: step 4: implement a stemmer
+	return: a stemmed document
+"""
 def stemmer(doc):
 	sentence_stemmed = []
 	# apply porter stemmer to all words in the document

@@ -9,8 +9,11 @@ from pre_processing import progressbar, tag_removal, stopword_removal, stemmer
 from LinkedList import LinkedList
 
 
-# print a table for dictionary and be able to adjust the width of term column
-# print posting lists according to terms
+"""
+	pre: dictionary(list), postings(list)
+	post: print a table for dictionary and be able to adjust the width of term column, printposting lists according to terms
+	return: NONE
+"""
 def print_table(dictionary, postings):
 	# calculate the longest string length
 	width = 0
@@ -33,8 +36,11 @@ def print_table(dictionary, postings):
 		posting.printList()
 
 
-# create a dictionary
-# pass in a list containing list of docs, and a list of all words
+"""
+	pre: a list of preprocessed documents, a unique word list
+	post: create a dictionary, pass in a list containing list of docs, and a list of all words
+	return: dictionary, posting list
+"""
 def postingLists_creation(docs, unique_words):
 	dictionary, postings, row = [], [], {}
 
@@ -68,7 +74,12 @@ def postingLists_creation(docs, unique_words):
 
 	return dictionary, postings
 
-# this is the main function to export
+
+"""
+	pre: a list of docs, a list of doc filenames
+	post: this is the main function to export
+	return: dictionary, posting lists
+"""
 def indexing(docs, files):
 	# variable initialization
 	processed_docs, doc_list, unique_words, flat_list = [], [], [], []

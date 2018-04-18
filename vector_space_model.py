@@ -11,23 +11,33 @@ from math import log10
 import numpy as np
 
 
-# this is the helper function for calculating the vector length
+"""
+	pre: a vector
+	post: this is the helper function for calculating the vector length
+	return: vector length
+"""
 def vector_length_calc(doc_vec):
 	total = 0
 	for weight in doc_vec:
 		total += weight ** 2
 	return total ** 0.5
 
+
 """
 	pre: d1 is a normalized list, d2 is a normalized list
 	post: calculate the cosine similarity
-	return: reture the similarity score
+	return: similarity score
 """
 def cos_sim(d1, d2):
 	result = map(lambda n1, n2: n1 * n2, d1, d2)
 	return sum(result)
 
-# creates a TF_IDF weight matrix using pre-processed dictionary and posting lists
+
+"""
+	pre: dictionary(list), posting(list), filenames(list)
+	post: creates a TF_IDF weight matrix using pre-processed dictionary and posting lists
+	return: tf-idf weight matrix
+"""
 def tf_idf(dictionary, postings, filenames):
 	# get the number of the documents, which is N in idf
 	N = len(filenames)
@@ -55,7 +65,11 @@ def tf_idf(dictionary, postings, filenames):
 	return weight_matrix
 
 
-# calculating vector length for each document
+"""
+	pre: a weight matrix(numpy array)
+	post: calculating vector length for each document
+	return: list of vector length of each columns
+"""
 def vector_length(weight_matrix):
 	doc_vec_length_list = list()
 	for i in range(1, weight_matrix.shape[1]):
@@ -65,10 +79,14 @@ def vector_length(weight_matrix):
 	return doc_vec_length_list
 
 
-# pre-processing the query
-def query_processing(query, dictionary, weight_matrix):
+"""
+	pre: query from the user input, dictionary(list), weight_matrix(numpy array), filenames(list)
+	post: pre-processing the query
+	return: a tuple contains ranking score, doc name, index
+"""
+def query_processing(query, dictionary, weight_matrix, filenames):
 	# creates a list for document candidate
-	relevant_doc, normalized_weight, normalized_query = list(), list(), list()
+	relevant_doc, normalized_weight, normalized_query, indexes = list(), list(), list(), list()
 
 	query_weight = [0] * len(dictionary)
 	# construct the query vector
@@ -85,7 +103,14 @@ def query_processing(query, dictionary, weight_matrix):
 		# calculate the cosine similarity
 		relevance = cos_sim(normalized_weight, normalized_query)
 		# if the result does not contain all 0's then it is a relevant doc
-		relevant_doc.append(relevance)
+		if relevance != 0:
+			relevant_doc.append(relevance)
+			indexes.append(col)
 
-	print relevant_doc
-	return query_weight
+	# sort the document based on the cosine similarity from highest to the lowest
+	# create a tuple contains ranking score, doc name, index
+	doc_with_rank_score = zip(relevant_doc, [filenames[i] for i in indexes], indexes)
+	doc_with_rank_score = sorted(doc_with_rank_score, key=lambda tup: tup[0], reverse=True)
+
+	print doc_with_rank_score
+	return relevant_doc

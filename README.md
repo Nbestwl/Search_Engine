@@ -11,7 +11,7 @@ Information Retrieval (Spring 2018)
 #### 2.Vector Space model
 - [x] 1.calculate the length of the corresponding doc vector for each doc
 - [x] 2.pre-process the query and calc the length of query vector
-- [ ] 3.compute the tf-idf similarity scores
+- [x] 3.compute the tf-idf similarity scores
 
 
 #### 3.Niche crawler

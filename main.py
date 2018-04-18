@@ -3,6 +3,12 @@ from pre_processing import *
 from indexing import *
 from vector_space_model import tf_idf, vector_length, query_processing, vector_length_calc
 
+
+"""
+	pre: NONE
+	post: main function putting everything together
+	return: NONE
+"""
 def main():
 	print "\n\nstart pre-processing html tags..."
 	docs, filenames = tag_removal()
@@ -17,13 +23,12 @@ def main():
 	weight_matrix = tf_idf(dictionary, postings, filenames)
 
 	print "\n\nquery vector length calculation..."
-	query = "gold silver truck"
+	query = "damaged"
 
 	processed_query = stopword_removal(query)
 	processed_query = stemmer(processed_query)
 
-	query_weight = query_processing(processed_query, dictionary, weight_matrix)
-	query_vec_length = vector_length_calc(query_weight)
+	similarity_score = query_processing(processed_query, dictionary, weight_matrix, filenames)
 
 if __name__ == '__main__':
 	main()

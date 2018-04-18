@@ -4,6 +4,12 @@
 # 2.term_freq : term frequency in that document
 # 3.next : acts as a pointer points to the next node
 
+
+"""
+	pre: NONE
+	post: class for Node
+	return: NONE
+"""
 class Node(object):
 	def __init__(self, num, frequency, n = None):
 		self.doc_num = num
@@ -28,6 +34,12 @@ class Node(object):
 	def set_freq(self, frequency):
 		self.term_freq = frequency
 
+
+"""
+	pre: NONE
+	post: class for Linkedlist
+	return: NONE
+"""
 class LinkedList(object):
 	def __init__(self, r = None):
 		self.root = r
