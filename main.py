@@ -1,3 +1,4 @@
+
 # This is the main file, it will process the documents using customized functions from each file and call everything in here.
 import sys
 from pre_processing import *
@@ -22,9 +23,6 @@ class bcolors:
 	return: NONE
 """
 def main():
-	reload(sys)
-	sys.setdefaultencoding('utf8')
-
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart pre-processing html tags...".upper() + bcolors.ENDC
 	docs, filenames = tag_removal()
 

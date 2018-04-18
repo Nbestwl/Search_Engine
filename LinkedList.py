@@ -1,9 +1,10 @@
-# this is the linked list class for sotring posting lists
-# structure:
-# 1.doc_num : document ID
-# 2.term_freq : term frequency in that document
-# 3.next : acts as a pointer points to the next node
-
+'''
+this is the linked list class for sotring posting lists
+structure:
+1.doc_num : document ID
+2.term_freq : term frequency in that document
+3.next : acts as a pointer points to the next node
+'''
 
 """
 	pre: NONE
