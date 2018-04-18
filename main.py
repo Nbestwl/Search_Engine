@@ -37,7 +37,7 @@ def main():
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart building vector space model...".upper() + bcolors.ENDC
 	weight_matrix = tf_idf(dictionary, postings, filenames)
 
-	print bcolors.BOLD + bcolors.OKGREEN + "\n\nquery vector length calculation...".upper() + bcolors.ENDC
+	print bcolors.BOLD + bcolors.OKGREEN + "\n\ncalculating document rankings...".upper() + bcolors.ENDC
 	query = "damaged"
 
 	processed_query = stopword_removal(query)
