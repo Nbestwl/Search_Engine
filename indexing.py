@@ -70,7 +70,7 @@ def postingLists_creation(docs, unique_words):
 		# append posting list and dictionary for each term
 		postings.append(posting)
 		dictionary.append(row.copy())
-		progressbar(i + 1, total, prefix = 'Progress:', suffix = unique_words[i], length = 50)
+		progressbar(i + 1, total, prefix = 'Progress:', length = 50)
 
 	return dictionary, postings
 
@@ -80,7 +80,7 @@ def postingLists_creation(docs, unique_words):
 	post: this is the main function to export
 	return: dictionary, posting lists
 """
-def indexing(docs, files):
+def indexing(docs):
 	# variable initialization
 	processed_docs, doc_list, unique_words, flat_list = [], [], [], []
 
@@ -92,7 +92,7 @@ def indexing(docs, files):
 		doc_stemmer = stemmer(doc_no_stopwords)
 		processed_docs.append(doc_stemmer)
 		# print out the progress
-		progressbar(i + 1, total, prefix = 'Progress:', suffix = files[i], length = 50)
+		progressbar(i + 1, total, prefix = 'Progress:', length = 50)
 
 	# load in all docs into a list structure and flat out the nested list
 	for doc in processed_docs:
@@ -102,7 +102,6 @@ def indexing(docs, files):
 	# find all the words without duplicates
 	[unique_words.append(x) for x in doc_list if x not in unique_words]
 	# create a ditionary and a postings list for pre-processed documents
-	print "\n\nPopulating dictionary and posting lists..."
 	dictionary, postings = postingLists_creation(processed_docs, unique_words)
 
 	return  dictionary, postings

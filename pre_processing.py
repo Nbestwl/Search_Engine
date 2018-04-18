@@ -4,7 +4,7 @@
 # 3. implement a stop list to remove all stop words
 # 4. reduce all words down to its stem using its stemmer
 
-import sys, time
+import sys
 #import porter stemmer
 from stemming.porter2 import stem
 #nltk is the third party library we are using for stop words and stems.
@@ -48,10 +48,11 @@ def process_html(text):
 	post: construct a progress bar and show the percentage of the progress
 	return: NONE
 """
-def progressbar(iteration, total, prefix, suffix, length, fill = '*'):
+def progressbar(iteration, total, prefix, length, fill=u'\u2588'):
 	percent = ("{0:." + str(1) + "f}").format(100 * (iteration / float(total)))
 	filledLength = int(length * iteration // total)
-	bar = fill * filledLength + '-' * (length - filledLength)
+	bar = fill * filledLength + ' ' * (length - filledLength)
+	suffix = str(iteration) + "/" + str(total)
 
 	sys.stdout.write('%s |%s| %s%% %s\r' % (prefix, bar, percent, suffix))
 	sys.stdout.flush()
@@ -64,7 +65,7 @@ def progressbar(iteration, total, prefix, suffix, length, fill = '*'):
 """
 def tag_removal():
 	# read in the sample files directory
-	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/testing/'
+	rootdir = '/Users/silencer/Desktop/workspace/ir_project/EECS-767/docsnew/'
 	# initilize an empty list to store all testing strings
 	docs = list()
 	filenames = list()
@@ -78,7 +79,7 @@ def tag_removal():
 				doc = myfile.read()
 				# add the document to docs one at a time
 				docs.append(process_html(doc))
-				progressbar(i + 1, total, prefix = 'Progress:', suffix = file, length = 50)
+				progressbar(i + 1, total, prefix = 'Progress:', length = 50)
 				filenames.append(file)
 
 	return docs, filenames
