@@ -12,6 +12,15 @@ import numpy as np
 
 
 """
+	pre: numpy array
+	post: helper function for writing data into a txt file
+	return: NONE
+"""
+def write_data(weight_matrix):
+	np.savetxt('weight_matrix.txt', weight_matrix, fmt='%1.3f')
+
+
+"""
 	pre: a vector
 	post: this is the helper function for calculating the vector length
 	return: vector length

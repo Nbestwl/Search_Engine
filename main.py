@@ -3,7 +3,7 @@
 import sys
 from pre_processing import *
 from indexing import *
-from vector_space_model import tf_idf, vector_length, query_processing, vector_length_calc
+from vector_space_model import tf_idf, vector_length, query_processing, vector_length_calc, write_data
 
 
 class bcolors:
@@ -23,7 +23,7 @@ class bcolors:
 	return: NONE
 """
 def main():
-	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart pre-processing html tags...".upper() + bcolors.ENDC
+	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart pre-processing html tags".upper() + bcolors.ENDC
 	docs, filenames = tag_removal()
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart buidling dictionary and postings".upper() + bcolors.ENDC
@@ -32,10 +32,14 @@ def main():
 	# testing results
 	# print_table(dictionary, postings)
 
-	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart building vector space model...".upper() + bcolors.ENDC
+	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart building vector space model".upper() + bcolors.ENDC
 	weight_matrix = tf_idf(dictionary, postings, filenames)
 
-	print bcolors.BOLD + bcolors.OKGREEN + "\n\ncalculating document rankings...".upper() + bcolors.ENDC
+	print bcolors.BOLD + bcolors.OKGREEN + "\n\nwriting data to a file".upper() + bcolors.ENDC
+	print weight_matrix
+	write_data(weight_matrix)
+
+	print bcolors.BOLD + bcolors.OKGREEN + "\n\ncalculating document rankings".upper() + bcolors.ENDC
 	query = "damaged"
 
 	processed_query = stopword_removal(query)

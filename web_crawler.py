@@ -46,14 +46,14 @@ class Spider:
 
 		# if queue is not empty, recursively crawling the the domain
 		if self.get_frontier_size() != 0:
-			if self.get_frontier_size() == self.capacity:
+			if self.get_frontier_size() <= self.capacity:
 				print 'frontier: ', self.get_frontier_size()
 				next_url = self.dequeue()
 				print next_url
 				self.url_repo.append(next_url)
 				self.crawl(next_url)
 			else:
-				print "frontier reaches the limit"
+				print "frontier reaches the limit, size: ", self.get_frontier_size()
 				return
 		else:
 			print "done"
