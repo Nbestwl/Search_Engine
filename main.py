@@ -39,13 +39,15 @@ def main():
 	print weight_matrix
 	write_data(weight_matrix)
 
-	print bcolors.BOLD + bcolors.OKGREEN + "\n\ncalculating document rankings".upper() + bcolors.ENDC
-	query = "damaged"
 
-	processed_query = stopword_removal(query)
-	processed_query = stemmer(processed_query)
+	while True:
+		query = raw_input(bcolors.BOLD + bcolors.OKGREEN + '\n\nEnter your query to search: \n' + bcolors.ENDC)
 
-	similarity_score = query_processing(processed_query, dictionary, weight_matrix, filenames)
+		print bcolors.BOLD + bcolors.OKGREEN + "\n\ncalculating document rankings".upper() + bcolors.ENDC
+		processed_query = stopword_removal(query)
+		processed_query = stemmer(processed_query)
+
+		similarity_score = query_processing(processed_query, dictionary, weight_matrix, filenames)
 
 if __name__ == '__main__':
 	main()

@@ -104,22 +104,27 @@ def query_processing(query, dictionary, weight_matrix, filenames):
 			if word == item['term']:
 				query_weight[index] = weight_matrix[index, 0]
 
-	# identify all the document candidates
-	for col in range(weight_matrix[:, 1:].shape[1]):
-		# normalize the weight matrix
-		normalized_weight = weight_matrix[:,col + 1] / vector_length(weight_matrix)[col]
-		normalized_query = query_weight / vector_length_calc(query_weight)
-		# calculate the cosine similarity
-		relevance = cos_sim(normalized_weight, normalized_query)
-		# if the result does not contain all 0's then it is a relevant doc
-		if relevance != 0:
-			relevant_doc.append(relevance)
-			indexes.append(col)
+	# if the query contains no relevant words, then output a msg and ask user to input again
+	if all(v == 0 for v in query_weight):
+		print 'nothing is found'
+		return False
+	else:
+		# identify all the document candidates
+		for col in range(weight_matrix[:, 1:].shape[1]):
+			# normalize the weight matrix
+			normalized_weight = weight_matrix[:,col + 1] / vector_length(weight_matrix)[col]
+			normalized_query = [x / vector_length_calc(query_weight) for x in query_weight]
+			# calculate the cosine similarity
+			relevance = cos_sim(normalized_weight, normalized_query)
+			# if the result does not contain all 0's then it is a relevant doc
+			if relevance != 0:
+				relevant_doc.append(relevance)
+				indexes.append(col)
 
-	# sort the document based on the cosine similarity from highest to the lowest
-	# create a tuple contains ranking score, doc name, index
-	doc_with_rank_score = zip(relevant_doc, [filenames[i] for i in indexes], indexes)
-	doc_with_rank_score = sorted(doc_with_rank_score, key=lambda tup: tup[0], reverse=True)
+		# sort the document based on the cosine similarity from highest to the lowest
+		# create a tuple contains ranking score, doc name, index
+		doc_with_rank_score = zip(relevant_doc, [filenames[i] for i in indexes], indexes)
+		doc_with_rank_score = sorted(doc_with_rank_score, key=lambda tup: tup[0], reverse=True)
 
-	print doc_with_rank_score
-	return relevant_doc
+		print doc_with_rank_score
+		return relevant_doc
