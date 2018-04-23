@@ -30,15 +30,15 @@ def main():
 	# create dictionary and postingsb
 	dictionary, postings = indexing(docs)
 	# testing results
-	# print_table(dictionary, postings)
+	print_table(dictionary, postings)
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart building vector space model".upper() + bcolors.ENDC
 	weight_matrix = tf_idf(dictionary, postings, filenames)
 
+	# writing all the weight matrix to a single file
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nwriting data to a file".upper() + bcolors.ENDC
 	print weight_matrix
 	write_data(weight_matrix)
-
 
 	while True:
 		query = raw_input(bcolors.BOLD + bcolors.OKGREEN + '\n\nEnter your query to search: \n' + bcolors.ENDC)

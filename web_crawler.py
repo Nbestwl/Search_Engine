@@ -16,7 +16,6 @@ class Spider:
 		self.url_repo = []
 
 	def get_frontier_size(self):
-		print self.frontier
 		return len(self.frontier)
 
 	def get_repo_size(self):
@@ -32,28 +31,32 @@ class Spider:
 		item = self.frontier.pop()
 		return item
 
-	def crawl(self, root_url):
+	def crawl(self, root_url, iteration=0):
+		iteration += 1
+
 		page = requests.get(root_url)
 		webpage = html.fromstring(page.content)
 		urls = webpage.xpath('//a/@href')
 
 		# enqueue url to the left of the queue
 		for url in urls:
-			if url.startswith("http"):
+			if not url.startswith("http"):
+				url = root_url + url
+			if url not in self.get_repo():
 				self.enqueue(url)
-			else:
-				self.enqueue(root_url + url)
 
 		# if queue is not empty, recursively crawling the the domain
 		if self.get_frontier_size() != 0:
-			if self.get_frontier_size() <= self.capacity:
-				print 'frontier: ', self.get_frontier_size()
+			if self.get_repo_size() <= self.capacity:
+				# print 'frontier: ', self.get_frontier_size()
 				next_url = self.dequeue()
-				print next_url
+				# print next_url
 				self.url_repo.append(next_url)
-				self.crawl(next_url)
+
+				progressbar(iteration, self.capacity, prefix = 'Progress:', length = 50)
+				self.crawl(next_url, iteration)
 			else:
-				print "frontier reaches the limit, size: ", self.get_frontier_size()
+				# print "frontier reaches the limit, size: ", self.get_frontier_size()
 				return
 		else:
 			print "done"
@@ -63,7 +66,7 @@ class Spider:
 def main():
 	root_url = 'http://www.leiwangcoding.com/'
 
-	spider = Spider(20)
+	spider = Spider(1000)
 	spider.crawl(root_url)
 	print spider.get_repo_size()
 	print spider.get_repo()
