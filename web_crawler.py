@@ -32,7 +32,7 @@ def url_scraping(url, frontier, visited_repo, limit):
 	for link in soup.find_all('a'):
 		temp = link.get('href')
 		# make sure the link is valid
-		if temp.startswith("http") if temp else False and not frontier.full():
+		if (temp.startswith("http") if temp else False) and not (temp.endswith("pdf") if temp else False):
 			frontier.put(temp)
 
 	# keeps crawling when the frontier is not empty
@@ -115,7 +115,7 @@ def spider(root_url, limit):
 
 def main():
 	root_url = 'http://www.leiwangcoding.com'
-	spider(root_url, 50)
+	spider(root_url, 10)
 
 	# creating threads
 	# t1 = Thread(target=spider, args=(root_url, 10))
