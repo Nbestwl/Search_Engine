@@ -4,6 +4,7 @@ import sys
 from pre_processing import *
 from indexing import *
 from vector_space_model import tf_idf, vector_length, query_processing, vector_length_calc, write_data
+from web_crawler import spider
 
 
 class bcolors:
@@ -23,6 +24,10 @@ class bcolors:
 	return: NONE
 """
 def main():
+	# start crawling the domain
+	root_url = 'http://www.leiwangcoding.com'
+	spider(root_url, 5)
+
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart pre-processing html tags".upper() + bcolors.ENDC
 	docs, filenames = tag_removal()
 

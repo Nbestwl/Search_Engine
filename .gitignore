@@ -4,6 +4,7 @@
 
 # ignore testing folder
 /testing/*
+/temp/*
 *.DS_store
 *.pyc
 *.txt
