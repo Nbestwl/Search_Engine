@@ -15,9 +15,9 @@ Information Retrieval (Spring 2018)
 
 
 #### 3.Niche crawler
-- [ ] a multi-threaded spider that fetches and parses webpages
-- [ ] the URL frontier which stores to-be-crawled URLs
-- [ ] the URL repository that stores crawled URLs
+- [x] a multi-threaded spider that fetches and parses webpages
+- [x] the URL frontier which stores to-be-crawled URLs
+- [x] the URL repository that stores crawled URLs
 
 #### 4.Implement a simple UI
 ###### Please feed the collected documents to the search engine that you implemented in step 2. Please implement a Web-based interface to take user queries and return answers (document names, snapshot with search term(s) highlighted, and URL) to the user. You only need to provide a reasonable (not so fancy) interface, you can use WYSIWYG editors to generate HTML. Keep this version of your search engine, since it will be compared with two future versions.
