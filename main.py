@@ -25,8 +25,8 @@ class bcolors:
 """
 def main():
 	# start crawling the domain
-	root_url = 'http://www.leiwangcoding.com'
-	spider(root_url, 5)
+	# root_url = 'http://www.leiwangcoding.com'
+	# spider(root_url, 10)
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart pre-processing html tags".upper() + bcolors.ENDC
 	docs, filenames = tag_removal()

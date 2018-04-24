@@ -112,7 +112,9 @@ def query_processing(query, dictionary, weight_matrix, filenames):
 		# identify all the document candidates
 		for col in range(weight_matrix[:, 1:].shape[1]):
 			# normalize the weight matrix
-			normalized_weight = weight_matrix[:,col + 1] / vector_length(weight_matrix)[col]
+			if vector_length(weight_matrix)[col] != 0:
+				normalized_weight = weight_matrix[:,col + 1] / vector_length(weight_matrix)[col]
+
 			normalized_query = [x / vector_length_calc(query_weight) for x in query_weight]
 			# calculate the cosine similarity
 			relevance = cos_sim(normalized_weight, normalized_query)

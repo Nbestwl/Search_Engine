@@ -23,39 +23,48 @@ def url_scraping(url, frontier, visited_repo, limit):
 	try:
 		page = requests.get(url, timeout=1)
 		soup = BeautifulSoup(page.text, "lxml")
-
-		# recursively enqueue the link
-		for link in soup.find_all('a'):
-			url = link.get('href')
-			# make sure the link is valid
-			if url.startswith("http") if url else False and not frontier.full():
-				frontier.put(url)
-
-		# keeps crawling when the frontier is not empty
-		while not frontier.empty():
-			# dequeue the frontier
-			next_url = frontier.get()
-			if len(visited_repo) < limit:
-				# make sure the item is not duplicated
-				if next_url not in visited_repo:
-					#  mark the dequeued item as visited
-					visited_repo.append(next_url)
-
-					# indicate the crawling progress
-					progressbar(len(visited_repo), limit, prefix = 'Progress:', length = 50)
-					# indicate the crawling progress
-					# progressbar(len(visited_repo), limit, prefix = 'Progress:', length = 50)
-			else:
-				# return when the repo reaches the limit
-				return frontier, visited_repo
-			# continue scraping urls if the frontier hasn't reach the limit
-			if frontier.qsize() <= limit:
-				# recursively call the scraping method
-				url_scraping(next_url, frontier, visited_repo, limit)
 	# catch the exception if any url is not responding
 	except Exception as e:
 		# print e.message
 		return
+
+	# recursively enqueue the link
+	for link in soup.find_all('a'):
+		temp = link.get('href')
+		# make sure the link is valid
+		if temp.startswith("http") if temp else False and not frontier.full():
+			frontier.put(temp)
+
+	# keeps crawling when the frontier is not empty
+	while not frontier.empty():
+		# dequeue the frontier
+		next_url = frontier.get()
+		if len(visited_repo) < limit:
+			# make sure the item is not duplicated
+			if next_url not in visited_repo:
+				#  mark the dequeued item as visited
+				visited_repo.append(next_url)
+
+				# indicate the crawling progress
+				progressbar(len(visited_repo), limit, prefix = 'Progress:', length = 50)
+		else:
+			# return when the repo reaches the limit
+			return frontier, visited_repo
+		# continue scraping urls if the frontier hasn't reach the limit
+		if frontier.qsize() <= limit:
+			# recursively call the scraping method
+			url_scraping(next_url, frontier, visited_repo, limit)
+
+
+"""
+	pre: a path to a directory
+	post: remove all files within that dir
+	return: NONE
+"""
+def init_dir(mydir):
+	filelist = [ f for f in os.listdir(mydir) ]
+	for f in filelist:
+		os.remove(os.path.join(mydir, f))
 
 
 """
@@ -63,17 +72,23 @@ def url_scraping(url, frontier, visited_repo, limit):
 	post: writing the html content into a file
 	return: None
 """
-def file_writer(urls):
+def file_writer(urls, mydir):
 	for url in urls:
-		page = requests.get(url, timeout=1)
-		content = page.text
+		try:
+			page = requests.get(url, timeout=1)
+			content = page.text
 
-		basename = "Doc"
-		index = urls.index(url)
-		suffix = ".".join([str(index), 'html'])
-		filename = "_".join([basename, suffix])
-		with open(os.path.join('./temp/', filename), "w") as file:
-			file.write(content.encode('utf-8'))
+			basename = "Doc"
+			index = urls.index(url)
+			suffix = ".".join([str(index), 'html'])
+			filename = "_".join([basename, suffix])
+			with open(os.path.join(mydir, filename), "w") as file:
+				file.write(content.encode('utf-8'))
+
+		# catch the exception if any url is not responding
+		except Exception as e:
+			# print e.message
+			continue
 
 
 """
@@ -88,15 +103,19 @@ def spider(root_url, limit):
 
 	frontier, visited_repo = url_scraping(root_url, frontier, visited_repo, limit)
 	print "\nfrontier:", frontier.qsize()
-	print "\nvisitted", visited_repo
-	print "\nvisitted size: ", len(visited_repo)
+	print "\nvisited", visited_repo
+	print "\nvisited size: ", len(visited_repo)
 
-	file_writer(visited_repo)
+	# clear the directory before writing
+	mydir = './temp/'
+	init_dir(mydir)
+	# writing all html files to the dir
+	file_writer(visited_repo, mydir)
 
 
 def main():
-	root_url = 'http://www.ku.edu'
-	spider(root_url, 1000)
+	root_url = 'http://www.leiwangcoding.com'
+	spider(root_url, 50)
 
 	# creating threads
 	# t1 = Thread(target=spider, args=(root_url, 10))
