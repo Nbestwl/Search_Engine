@@ -40,14 +40,11 @@ def url_scraping(url, frontier, visited_repo, limit):
 				if next_url not in visited_repo:
 					#  mark the dequeued item as visited
 					visited_repo.append(next_url)
-<<<<<<< HEAD
 
 					# indicate the crawling progress
 					progressbar(len(visited_repo), limit, prefix = 'Progress:', length = 50)
-=======
 					# indicate the crawling progress
 					# progressbar(len(visited_repo), limit, prefix = 'Progress:', length = 50)
->>>>>>> 77d4f02e4c4e44a09ce6d23f1611fb2e571990d4
 			else:
 				# return when the repo reaches the limit
 				return frontier, visited_repo
@@ -57,7 +54,6 @@ def url_scraping(url, frontier, visited_repo, limit):
 				url_scraping(next_url, frontier, visited_repo, limit)
 	# catch the exception if any url is not responding
 	except Exception as e:
-<<<<<<< HEAD
 		# print e.message
 		return
 
@@ -78,10 +74,6 @@ def file_writer(urls):
 		filename = "_".join([basename, suffix])
 		with open(os.path.join('./temp/', filename), "w") as file:
 			file.write(content.encode('utf-8'))
-=======
-		print e.message
-    	return
->>>>>>> 77d4f02e4c4e44a09ce6d23f1611fb2e571990d4
 
 
 """
@@ -93,7 +85,6 @@ def spider(root_url, limit):
 	# initialize the frontier and url repo
 	frontier = Queue(maxsize=0)
 	visited_repo = []
-<<<<<<< HEAD
 
 	frontier, visited_repo = url_scraping(root_url, frontier, visited_repo, limit)
 	print "\nfrontier:", frontier.qsize()
@@ -101,36 +92,11 @@ def spider(root_url, limit):
 	print "\nvisitted size: ", len(visited_repo)
 
 	file_writer(visited_repo)
-=======
-
-	frontier, visited_repo = url_scraping(root_url, frontier, visited_repo, limit)
-	print "\nfrontier:", frontier.qsize()
-	print "\nvisitted", visited_repo
-	print "\nvisitted size: ", len(visited_repo)
->>>>>>> 77d4f02e4c4e44a09ce6d23f1611fb2e571990d4
 
 
 def main():
 	root_url = 'http://www.ku.edu'
 	spider(root_url, 1000)
-
-	# creating threads
-	# t1 = Thread(target=spider, args=(root_url, 10))
-	# t2 = Thread(target=spider, args=(root_url, 10))
-	# t3 = Thread(target=spider, args=(root_url, 10))
-	# t4 = Thread(target=spider, args=(root_url, 10))
-
-	# # starting threads
-	# t1.start()
-	# t2.start()
-	# t3.start()
-	# t4.start()
-
-	# # wait until all threads finish
-	# t1.join()
-	# t2.join()
-	# t3.join()
-	# t4.join()
 
 	# creating threads
 	# t1 = Thread(target=spider, args=(root_url, 10))
