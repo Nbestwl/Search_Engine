@@ -3,73 +3,46 @@
 (2) the URL frontier which stores to-be-crawled URLs
 (3) the URL repository that stores crawled URLs.
 '''
-from collections import deque
 import requests
-from lxml import html
+from bs4 import BeautifulSoup
+from Queue import Queue
 from pre_processing import progressbar
 
-class Spider:
-	def __init__(self, capacity):
-		# set the limitation of the spider capacity
-		self.capacity = capacity
-		self.frontier = deque()
-		self.url_repo = []
 
-	def get_frontier_size(self):
-		return len(self.frontier)
+"""
+	pre: a url
+	post: extract the urls at the page
+	return: return all urls
+"""
+def url_scraping(url):
+	page = requests.get('http://www.leiwangcoding.com', timeout=5)
+	soup = BeautifulSoup(page.text, "lxml")
+	return soup.find_all('a')
 
-	def get_repo_size(self):
-		return len(self.url_repo)
 
-	def get_repo(self):
-		return self.url_repo
+"""
+	pre: a root url which the crawling starts from, the limit of the frontier
+	post: crawl all pages from the frontier
+	return: NONE
+"""
+def spider(root_url, limit):
+	# set the frontier with a limit
+	frontier = Queue(maxsize=limit)
+	# recursively enqueue the link
+	for link in url_scraping(root_url):
+		# make sure the link is valid
+		url = link.get('href')
+		if url.startswith("http") and not frontier.full():
+			frontier.put(url)
 
-	def enqueue(self, item):
-		self.frontier.appendleft(item)
-
-	def dequeue(self):
-		item = self.frontier.pop()
-		return item
-
-	def crawl(self, root_url, iteration=0):
-		iteration += 1
-
-		page = requests.get(root_url)
-		webpage = html.fromstring(page.content)
-		urls = webpage.xpath('//a/@href')
-
-		# enqueue url to the left of the queue
-		for url in urls:
-			if not url.startswith("http"):
-				url = root_url + url
-			if url not in self.get_repo():
-				self.enqueue(url)
-
-		# if queue is not empty, recursively crawling the the domain
-		if self.get_frontier_size() != 0:
-			if self.get_repo_size() <= self.capacity:
-				# print 'frontier: ', self.get_frontier_size()
-				next_url = self.dequeue()
-				# print next_url
-				self.url_repo.append(next_url)
-
-				progressbar(iteration, self.capacity, prefix = 'Progress:', length = 50)
-				self.crawl(next_url, iteration)
-			else:
-				# print "frontier reaches the limit, size: ", self.get_frontier_size()
-				return
-		else:
-			print "done"
-			return
+	while not frontier.empty():
+		print frontier.get()
 
 
 def main():
-	root_url = 'http://www.leiwangcoding.com/'
+	root_url = 'http://www.leiwangcoding.com'
+	spider(root_url, 5)
 
-	spider = Spider(1000)
-	spider.crawl(root_url)
-	print spider.get_repo_size()
-	print spider.get_repo()
 
 if __name__ == '__main__':
 	main()
