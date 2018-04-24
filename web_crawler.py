@@ -12,10 +12,11 @@ from pre_processing import progressbar
 """
 	pre: a url
 	post: extract the urls at the page
-	return: return all urls
+	return: return frontier and a visited url repo
 """
 def url_scraping(url, frontier, visited_repo, limit):
-	page = requests.get(url, timeout=5)
+	# request will time out after 1 second if its not responding
+	page = requests.get(url, timeout=1)
 	soup = BeautifulSoup(page.text, "lxml")
 
 	# recursively enqueue the link
@@ -25,15 +26,22 @@ def url_scraping(url, frontier, visited_repo, limit):
 		if url.startswith("http") if url else False and not frontier.full():
 			frontier.put(url)
 
+	# keeps crawling when the frontier is not empty
 	while not frontier.empty():
+		# dequeue the frontier
 		next_url = frontier.get()
-		# dequeue a url and mark it as visited
 		if len(visited_repo) < limit:
+			# make sure the item is not duplicated
 			if next_url not in visited_repo:
+				#  mark the dequeued item as visited
 				visited_repo.append(next_url)
 		else:
+			# return when the repo reaches the limit
 			return frontier, visited_repo
-		url_scraping(next_url, frontier, visited_repo, limit)
+		# continue scraping urls if the frontier hasn't reach the limit
+		if frontier.qsize() <= limit:
+			# recursively call the scraping method
+			url_scraping(next_url, frontier, visited_repo, limit)
 
 
 """
@@ -47,12 +55,13 @@ def spider(root_url, limit):
 	visited_repo = []
 
 	frontier, visited_repo = url_scraping(root_url, frontier, visited_repo, limit)
-	print visited_repo
+	print "frontier:", frontier.qsize()
+	print "visitted", visited_repo
 
 
 def main():
 	root_url = 'http://www.leiwangcoding.com'
-	spider(root_url, 10)
+	spider(root_url, 100)
 
 
 if __name__ == '__main__':
