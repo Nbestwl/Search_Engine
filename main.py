@@ -3,7 +3,7 @@
 import sys
 from pre_processing import *
 from indexing import *
-from vector_space_model import tf_idf, vector_length, query_processing, vector_length_calc, write_data
+from vector_space_model import tf_idf, vector_length, query_processing, vector_length_calc, write_data, query_search
 from web_crawler import spider
 
 
@@ -38,21 +38,25 @@ def main():
 	print_table(dictionary, postings)
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart building vector space model".upper() + bcolors.ENDC
-	weight_matrix = tf_idf(dictionary, postings, filenames)
+	idf = tf_idf(dictionary, filenames)
 
 	# writing all the weight matrix to a single file
-	print bcolors.BOLD + bcolors.OKGREEN + "\n\nwriting data to a file".upper() + bcolors.ENDC
-	print weight_matrix
-	write_data(weight_matrix)
+	# print bcolors.BOLD + bcolors.OKGREEN + "\n\nwriting data to a file".upper() + bcolors.ENDC
+	# write_data(weight_matrix)
 
 	while True:
-		query = raw_input(bcolors.BOLD + bcolors.OKGREEN + '\n\nEnter your query to search: \n' + bcolors.ENDC)
+		query = raw_input(bcolors.BOLD + bcolors.OKGREEN + '\n\nEnter your query to search:(type q to quit search) \n' + bcolors.ENDC).lower()
 
-		print bcolors.BOLD + bcolors.OKGREEN + "\n\ncalculating document rankings".upper() + bcolors.ENDC
-		processed_query = stopword_removal(query)
-		processed_query = stemmer(processed_query)
+		if query == 'q':
+			print "goodbye!"
+			exit()
+		else:
+			print bcolors.BOLD + bcolors.OKGREEN + "\n\ncalculating document rankings".upper() + bcolors.ENDC
+			processed_query = stopword_removal(query)
+			processed_query = stemmer(processed_query)
 
-		similarity_score = query_processing(processed_query, dictionary, weight_matrix, filenames)
+		# similarity_score = query_processing(processed_query, dictionary, weight_matrix, filenames)
+		similarity_score = query_search(processed_query, dictionary, postings, idf, filenames)
 
 if __name__ == '__main__':
 	main()

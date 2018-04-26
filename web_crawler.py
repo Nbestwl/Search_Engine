@@ -115,7 +115,7 @@ def spider(root_url, limit):
 
 def main():
 	root_url = 'http://www.leiwangcoding.com'
-	spider(root_url, 10)
+	spider(root_url, 50)
 
 	# creating threads
 	# t1 = Thread(target=spider, args=(root_url, 10))

@@ -86,6 +86,18 @@ class LinkedList(object):
 				cur_node = cur_node.get_next()
 		return False
 
+	def retrive_doc_freq(self):
+		all_docs, all_freq = [], []
+		start = self.root
+		while start:
+			all_docs.append(start.get_doc())
+			all_freq.append(start.get_freq())
+
+			if start.get_next() == None:
+				return all_docs, all_freq
+			start = start.get_next()
+		return False
+
 	def printList(self):
 		message = ''
 		start = self.root

@@ -33,48 +33,6 @@ def vector_length_calc(doc_vec):
 
 
 """
-	pre: d1 is a normalized list, d2 is a normalized list
-	post: calculate the cosine similarity
-	return: similarity score
-"""
-def cos_sim(d1, d2):
-	result = map(lambda n1, n2: n1 * n2, d1, d2)
-	return sum(result)
-
-
-"""
-	pre: dictionary(list), posting(list), filenames(list)
-	post: creates a TF_IDF weight matrix using pre-processed dictionary and posting lists
-	return: tf-idf weight matrix
-"""
-def tf_idf(dictionary, postings, filenames):
-	# get the number of the documents, which is N in idf
-	N = len(filenames)
-	rows = len(dictionary)
-
-	# initialize weight matrix with 0s
-	weight_matrix = np.zeros(shape=(rows, N + 1), dtype=np.float)
-	# calculate idf
-	for i in range(len(dictionary)):
-		df = dictionary[i]['doc_freq']
-		# calculate idf
-		idf = log10(Decimal(N)/Decimal(df))
-		weight_matrix[i, 0] = idf
-		# scan through posting lists to load in the term freq
-		for j in range(N):
-			# the term exists in the doc then load in the term freq
-			if postings[i].find(j):
-				weight_matrix[i, j + 1] = postings[i].find(j) * idf
-			# it will be 0 if it doesn't exist
-			else:
-				weight_matrix[i, j + 1] = 0
-
-	# return the tf-idf weight matrix
-	print weight_matrix
-	return weight_matrix
-
-
-"""
 	pre: a weight matrix(numpy array)
 	post: calculating vector length for each document
 	return: list of vector length of each columns
@@ -86,6 +44,49 @@ def vector_length(weight_matrix):
 		doc_vec_length_list.append(vec_len)
 
 	return doc_vec_length_list
+
+
+"""
+	pre: d1 is a normalized list, d2 is a normalized list
+	post: calculate the cosine similarity
+	return: similarity score
+"""
+def cos_sim(d1, d2):
+	result = map(lambda n1, n2: n1 * n2, d1, d2)
+	return sum(result)
+
+
+"""
+	pre: dictionary(list), filenames(list)
+	post: creates a IDF list using pre-processed dictionary and number of files
+	return: idf list
+"""
+def tf_idf(dictionary, filenames):
+	# get the number of the documents, which is N in idf
+	N = len(filenames)
+	rows = len(dictionary)
+
+	# initialize weight matrix with 0s
+	# weight_matrix = np.zeros(shape=(rows, N + 1), dtype=np.float)
+	# calculate idf
+	idf_list = []
+	for i in range(len(dictionary)):
+		df = dictionary[i]['doc_freq']
+		# calculate idf
+		idf = log10(Decimal(N)/Decimal(df))
+		idf_list.append(idf)
+		# # scan through posting lists to load in the term freq
+		# for j in range(N):
+		# 	# the term exists in the doc then load in the term freq
+		# 	if postings[i].find(j):
+		# 		weight_matrix[i, j + 1] = postings[i].find(j) * idf
+		# 	# it will be 0 if it doesn't exist
+		# 	else:
+		# 		weight_matrix[i, j + 1] = 0
+
+	# return the tf-idf weight matrix
+	print 'idf_list: ', idf_list
+	return idf_list
 
 
 """
@@ -104,6 +105,7 @@ def query_processing(query, dictionary, weight_matrix, filenames):
 			if word == item['term']:
 				query_weight[index] = weight_matrix[index, 0]
 
+	print 'query_weight: ', query_weight
 	# if the query contains no relevant words, then output a msg and ask user to input again
 	if all(v == 0 for v in query_weight):
 		print 'nothing is found'
@@ -114,6 +116,7 @@ def query_processing(query, dictionary, weight_matrix, filenames):
 			# normalize the weight matrix
 			if vector_length(weight_matrix)[col] != 0:
 				normalized_weight = weight_matrix[:,col + 1] / vector_length(weight_matrix)[col]
+			print 'normalized_weight: ', normalized_weight
 
 			normalized_query = [x / vector_length_calc(query_weight) for x in query_weight]
 			# calculate the cosine similarity
@@ -130,3 +133,24 @@ def query_processing(query, dictionary, weight_matrix, filenames):
 
 		print doc_with_rank_score
 		return relevant_doc
+
+"""
+	pre: query string list, dictionary, posting lists, weight
+	post:
+	return:
+"""
+def query_search(query, dictionary, postings, idf, filenames):
+	# search the word in the dictionary and locate the index of the word
+	for word in query:
+		# variable init
+		all_docs, all_freq, tf_idf = [], [], []
+		for index, item in enumerate(dictionary):
+			if word == item['term']:
+				# retrieve the document numbers and term frequency of that specific term
+				all_docs, all_freq = postings[index].retrive_doc_freq()
+				# retrieve the corresponding idf
+				tf = idf[index]
+				# use idf to calculate the tf-idf
+				tf_idf = map(lambda x: x * tf, all_freq)
+
+		print all_docs, tf_idf
