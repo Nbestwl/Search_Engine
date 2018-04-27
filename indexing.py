@@ -4,9 +4,31 @@
 # 2.ceate a posting list for each row in the dictionary and connect to its index
 # 3.testing it within a folder that contains a number of files
 
+import time
 import os
 from pre_processing import progressbar, tag_removal, stopword_removal, stemmer
 from LinkedList import LinkedList
+from multiprocessing.pool import ThreadPool
+
+
+"""
+	pre: document lists
+	post: removing stop words and stmmers
+	return: doc lists
+"""
+def preproecssing_helper(docs):
+	processed_docs = []
+	for i, doc in enumerate(docs):
+		total = len(docs)
+		# remove stopwords
+		doc_no_stopwords = stopword_removal(doc)
+		# stemming the words
+		doc_stemmer = stemmer(doc_no_stopwords)
+		processed_docs.append(doc_stemmer)
+		# print out the progress
+		progressbar(i + 1, total, prefix = 'Pre-processing documents:', length = 50)
+
+	return processed_docs
 
 
 """
@@ -70,7 +92,7 @@ def postingLists_creation(docs, unique_words):
 		# append posting list and dictionary for each term
 		postings.append(posting)
 		dictionary.append(row.copy())
-		progressbar(i + 1, total, prefix = 'Progress:', length = 50)
+		progressbar(i + 1, total, prefix = 'Building dictionary and posting lists:', length = 50)
 
 	return dictionary, postings
 
@@ -82,18 +104,24 @@ def postingLists_creation(docs, unique_words):
 """
 def indexing(docs):
 	# variable initialization
-	processed_docs, doc_list, unique_words, flat_list = [], [], [], []
+	processed_docs, doc_list, unique_words, async_result = [], [], [], []
 
-	for i, doc in enumerate(docs):
-		total = len(docs)
-		# remove stopwords
-		doc_no_stopwords = stopword_removal(doc)
-		# stemming the words
-		doc_stemmer = stemmer(doc_no_stopwords)
-		processed_docs.append(doc_stemmer)
-		# print out the progress
-		progressbar(i + 1, total, prefix = 'Progress:', length = 50)
+	# using multi thread to pre process all the documents
+	start = time.time()
+	num_of_threads = 4
+	pool = ThreadPool(processes=num_of_threads)
+	for x in range(num_of_threads):
+		divived_docs = [docs[i:i + len(docs)/num_of_threads] for i in xrange(0, len(docs), len(docs)/num_of_threads)][x]
+		async_result.append(pool.apply_async(preproecssing_helper, (divived_docs, )))
 
+	for i in range(len(async_result)):
+		processed_docs.append(async_result[i].get())
+
+	processed_docs = [item for sublist in processed_docs for item in sublist]
+
+	end = time.time()
+
+	print 'time is : ', end - start
 	# load in all docs into a list structure and flat out the nested list
 	for doc in processed_docs:
 		for word in doc:
@@ -102,6 +130,19 @@ def indexing(docs):
 	# find all the words without duplicates
 	[unique_words.append(x) for x in doc_list if x not in unique_words]
 	# create a ditionary and a postings list for pre-processed documents
-	dictionary, postings = postingLists_creation(processed_docs, unique_words)
+	# dictionary, postings = postingLists_creation(processed_docs, unique_words)
 
-	return  dictionary, postings
+	# print processed_docs
+	# return  dictionary, postings
+
+
+def main():
+	l = list(range(91))
+	n = 8
+
+	for x in range(9):
+		print [l[i:i + len(l)/n] for i in xrange(0, len(l), len(l)/n)][x]
+
+
+if __name__ == '__main__':
+	main()
