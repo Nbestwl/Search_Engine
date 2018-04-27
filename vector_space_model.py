@@ -47,13 +47,15 @@ def vector_length(weight_matrix):
 
 
 """
-	pre: d1 is a normalized list, d2 is a normalized list
+	pre: d1 is a vector, d2 is a vector
 	post: calculate the cosine similarity
 	return: similarity score
 """
 def cos_sim(d1, d2):
-	result = map(lambda n1, n2: n1 * n2, d1, d2)
-	return sum(result)
+	l1 = vector_length_calc(d1)
+	l2 = vector_length_calc(d2)
+	result = sum(map(lambda n1, n2: n1 * n2, d1, d2))
+	return result / (l1 * l2)
 
 
 """
@@ -135,17 +137,23 @@ def query_processing(query, dictionary, weight_matrix, filenames):
 		return relevant_doc
 
 """
-	pre: query string list, dictionary, posting lists, weight
-	post:
-	return:
+	pre: query string list, dictionary, posting lists, idf list, filenames
+	post: using dictionary to match the query index and retrieve doc and freq info from posting lists
+	return: ranked documents with cosine similarity
 """
 def query_search(query, dictionary, postings, idf, filenames):
+	# var init
+	query_vector = []
+	cos_sim_helper = []
+
 	# search the word in the dictionary and locate the index of the word
 	for word in query:
 		# variable init
 		all_docs, all_freq, tf_idf = [], [], []
 		for index, item in enumerate(dictionary):
 			if word == item['term']:
+				# construct the query vector using idf list
+				query_vector.append(idf[index])
 				# retrieve the document numbers and term frequency of that specific term
 				all_docs, all_freq = postings[index].retrive_doc_freq()
 				# retrieve the corresponding idf
@@ -153,4 +161,23 @@ def query_search(query, dictionary, postings, idf, filenames):
 				# use idf to calculate the tf-idf
 				tf_idf = map(lambda x: x * tf, all_freq)
 
+				# store the tf-idf, doc number and index of the word into a list for futher cosine similarity calc
+				for doc in all_docs:
+					# add another entry if the doc is not in the list
+					if doc not in cos_sim_helper:
+						cos_sim_helper.append(doc)
+
 		print all_docs, tf_idf
+	print 'query_vector: ', query_vector
+	print 'cos_sim_helper: ', cos_sim_helper
+
+
+def main():
+	v1 = [0.12493873660829993, 12493873660829993]
+	v2 = [0.12493873660829993, 12493873660829993]
+
+	print cos_sim(v1, v2)
+
+
+if __name__ == '__main__':
+	main()

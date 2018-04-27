@@ -45,7 +45,7 @@ def main():
 	# write_data(weight_matrix)
 
 	while True:
-		query = raw_input(bcolors.BOLD + bcolors.OKGREEN + '\n\nEnter your query to search:(type q to quit search) \n' + bcolors.ENDC).lower()
+		query = raw_input(bcolors.BOLD + bcolors.OKGREEN + '\n\nEnter your query to search:(type q to quit search) \n'.upper() + bcolors.ENDC).lower()
 
 		if query == 'q':
 			print "goodbye!"
