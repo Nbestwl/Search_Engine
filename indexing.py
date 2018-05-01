@@ -8,7 +8,7 @@ import time
 import os
 from pre_processing import progressbar, tag_removal, stopword_removal, stemmer
 from LinkedList import LinkedList
-from multiprocessing.pool import ThreadPool
+from multiprocessing import Pool
 
 
 """
@@ -18,15 +18,11 @@ from multiprocessing.pool import ThreadPool
 """
 def preproecssing_helper(docs):
 	processed_docs = []
-	for i, doc in enumerate(docs):
-		total = len(docs)
-		# remove stopwords
-		doc_no_stopwords = stopword_removal(doc)
-		# stemming the words
-		doc_stemmer = stemmer(doc_no_stopwords)
-		processed_docs.append(doc_stemmer)
-		# print out the progress
-		progressbar(i + 1, total, prefix = 'Pre-processing documents:', length = 50)
+	# remove stopwords
+	doc_no_stopwords = stopword_removal(docs)
+	# stemming the words
+	doc_stemmer = stemmer(doc_no_stopwords)
+	processed_docs.append(doc_stemmer)
 
 	return processed_docs
 
@@ -108,17 +104,11 @@ def indexing(docs):
 
 	# using multi thread to pre process all the documents
 	start = time.time()
-	num_of_threads = 4
-	pool = ThreadPool(processes=num_of_threads)
-	for x in range(num_of_threads):
-		divived_docs = [docs[i:i + len(docs)/num_of_threads] for i in xrange(0, len(docs), len(docs)/num_of_threads)][x]
-		async_result.append(pool.apply_async(preproecssing_helper, (divived_docs, )))
 
-	for i in range(len(async_result)):
-		processed_docs.append(async_result[i].get())
-
-	processed_docs = [item for sublist in processed_docs for item in sublist]
-
+	p = Pool(processes=8)
+	result = p.map(preproecssing_helper, docs)
+	# flatten the list
+	processed_docs = [item for sublist in result for item in sublist]
 	end = time.time()
 
 	print 'time is : ', end - start
@@ -130,10 +120,10 @@ def indexing(docs):
 	# find all the words without duplicates
 	[unique_words.append(x) for x in doc_list if x not in unique_words]
 	# create a ditionary and a postings list for pre-processed documents
-	# dictionary, postings = postingLists_creation(processed_docs, unique_words)
+	dictionary, postings = postingLists_creation(processed_docs, unique_words)
 
-	# print processed_docs
-	# return  dictionary, postings
+	print processed_docs
+	return  dictionary, postings
 
 
 def main():
