@@ -6,11 +6,49 @@
 (3) the URL repository that stores crawled URLs.
 '''
 import os
+import time
 import requests
-from bs4 import BeautifulSoup
 from Queue import Queue
-from multiprocessing.pool import ThreadPool
+from bs4 import BeautifulSoup
 from pre_processing import progressbar
+import threading
+
+
+"""
+	pre: a path to a directory
+	post: remove all files within that dir
+	return: NONE
+"""
+def init_dir(mydir):
+	filelist = [ f for f in os.listdir(mydir) ]
+	for f in filelist:
+		os.remove(os.path.join(mydir, f))
+
+
+"""
+	pre: a list of urls
+	post: writing the html content into a file
+	return: None
+"""
+def file_writer(urls, mydir):
+	for index, url in enumerate(urls):
+		try:
+			page = requests.get(url, timeout=1)
+			content = page.text
+
+			basename = "Doc"
+			index = urls.index(url)
+			suffix = ".".join([str(index), 'html'])
+			filename = "_".join([basename, suffix])
+			with open(os.path.join(mydir, filename), "w") as file:
+				file.write(content.encode('utf-8'))
+
+		# catch the exception if any url is not responding
+		except Exception as e:
+			# print e.message
+			continue
+		# indicate the crawling progress
+		progressbar(index, len(urls), prefix = 'Writing files:', length = 50)
 
 
 """
@@ -44,9 +82,8 @@ def url_scraping(url, frontier, visited_repo, limit):
 			if next_url not in visited_repo:
 				#  mark the dequeued item as visited
 				visited_repo.append(next_url)
-
 				# indicate the crawling progress
-				progressbar(len(visited_repo), limit, prefix = 'Progress:', length = 50)
+				progressbar(len(visited_repo), limit, prefix = 'Crawling URLs:', length = 50)
 		else:
 			# return when the repo reaches the limit
 			return frontier, visited_repo
@@ -54,41 +91,6 @@ def url_scraping(url, frontier, visited_repo, limit):
 		if frontier.qsize() <= limit:
 			# recursively call the scraping method
 			url_scraping(next_url, frontier, visited_repo, limit)
-
-
-"""
-	pre: a path to a directory
-	post: remove all files within that dir
-	return: NONE
-"""
-def init_dir(mydir):
-	filelist = [ f for f in os.listdir(mydir) ]
-	for f in filelist:
-		os.remove(os.path.join(mydir, f))
-
-
-"""
-	pre: a list of urls
-	post: writing the html content into a file
-	return: None
-"""
-def file_writer(urls, mydir):
-	for url in urls:
-		try:
-			page = requests.get(url, timeout=1)
-			content = page.text
-
-			basename = "Doc"
-			index = urls.index(url)
-			suffix = ".".join([str(index), 'html'])
-			filename = "_".join([basename, suffix])
-			with open(os.path.join(mydir, filename), "w") as file:
-				file.write(content.encode('utf-8'))
-
-		# catch the exception if any url is not responding
-		except Exception as e:
-			# print e.message
-			continue
 
 
 """
@@ -106,34 +108,20 @@ def spider(root_url, limit):
 	print "\nvisited", visited_repo
 	print "\nvisited size: ", len(visited_repo)
 
-	# clear the directory before writing
 	mydir = './temp/'
 	init_dir(mydir)
-	# writing all html files to the dir
 	file_writer(visited_repo, mydir)
 
 
 def main():
+	limit = 50
+	start = time.time()
+
 	root_url = 'http://www.leiwangcoding.com'
-	spider(root_url, 50)
+	spider(root_url, limit)
 
-	# creating threads
-	# t1 = Thread(target=spider, args=(root_url, 10))
-	# t2 = Thread(target=spider, args=(root_url, 10))
-	# t3 = Thread(target=spider, args=(root_url, 10))
-	# t4 = Thread(target=spider, args=(root_url, 10))
-
-	# # starting threads
-	# t1.start()
-	# t2.start()
-	# t3.start()
-	# t4.start()
-
-	# # wait until all threads finish
-	# t1.join()
-	# t2.join()
-	# t3.join()
-	# t4.join()
+	end = time.time()
+	print 'elapsed time: ', end - start
 
 
 if __name__ == '__main__':

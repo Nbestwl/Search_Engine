@@ -103,36 +103,21 @@ def indexing(docs):
 	processed_docs, doc_list, unique_words, async_result = [], [], [], []
 
 	# using multi thread to pre process all the documents
-	start = time.time()
-
 	p = Pool(processes=8)
 	result = p.map(preproecssing_helper, docs)
 	# flatten the list
 	processed_docs = [item for sublist in result for item in sublist]
-	end = time.time()
 
-	print 'time is : ', end - start
 	# load in all docs into a list structure and flat out the nested list
 	for doc in processed_docs:
 		for word in doc:
 			doc_list.append(word)
-
 	# find all the words without duplicates
 	[unique_words.append(x) for x in doc_list if x not in unique_words]
+
 	# create a ditionary and a postings list for pre-processed documents
 	dictionary, postings = postingLists_creation(processed_docs, unique_words)
 
-	print processed_docs
 	return  dictionary, postings
 
 
-def main():
-	l = list(range(91))
-	n = 8
-
-	for x in range(9):
-		print [l[i:i + len(l)/n] for i in xrange(0, len(l), len(l)/n)][x]
-
-
-if __name__ == '__main__':
-	main()

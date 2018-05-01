@@ -77,16 +77,7 @@ def tf_idf(dictionary, filenames):
 		# calculate idf
 		idf = log10(Decimal(N)/Decimal(df))
 		idf_list.append(idf)
-		# # scan through posting lists to load in the term freq
-		# for j in range(N):
-		# 	# the term exists in the doc then load in the term freq
-		# 	if postings[i].find(j):
-		# 		weight_matrix[i, j + 1] = postings[i].find(j) * idf
-		# 	# it will be 0 if it doesn't exist
-		# 	else:
-		# 		weight_matrix[i, j + 1] = 0
 
-	# return the tf-idf weight matrix
 	print 'idf_list: ', idf_list
 	return idf_list
 

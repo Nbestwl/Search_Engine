@@ -24,9 +24,11 @@ class bcolors:
 	return: NONE
 """
 def main():
-	# start crawling the domain
-	# root_url = 'http://www.leiwangcoding.com'
-	# spider(root_url, 10)
+	limit = 10
+	start = time.time()
+
+	root_url = 'http://www.leiwangcoding.com'
+	spider(root_url, limit)
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart pre-processing html tags".upper() + bcolors.ENDC
 	docs, filenames = tag_removal()
@@ -35,7 +37,7 @@ def main():
 	# create dictionary and postingsb
 	dictionary, postings = indexing(docs)
 	# testing results
-	print_table(dictionary, postings)
+	# print_table(dictionary, postings)
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart building vector space model".upper() + bcolors.ENDC
 	idf = tf_idf(dictionary, filenames)
@@ -43,6 +45,9 @@ def main():
 	# writing all the weight matrix to a single file
 	# print bcolors.BOLD + bcolors.OKGREEN + "\n\nwriting data to a file".upper() + bcolors.ENDC
 	# write_data(weight_matrix)
+
+	end = time.time()
+	print 'elapsed time: ', end - start
 
 	while True:
 		query = raw_input(bcolors.BOLD + bcolors.OKGREEN + '\n\nEnter your query to search:(type q to quit search) \n'.upper() + bcolors.ENDC).lower()
