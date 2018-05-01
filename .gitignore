@@ -8,3 +8,6 @@
 *.DS_store
 *.pyc
 *.txt
+
+# do not ignore these files
+!requirements.txt
