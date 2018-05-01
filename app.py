@@ -1,17 +1,10 @@
-from flask import Flask, render_template
-from web_crawler import spider
+from flask import Flask
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-	return render_template('template.html')
-
-@app.route('/my-link/')
-def my_link():
-	print 'I got clicked!'
-
-	return 'Click.'
+	return 'ok'
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run()
