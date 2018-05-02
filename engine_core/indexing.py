@@ -7,7 +7,7 @@
 import time
 import os
 from pre_processing import progressbar, tag_removal, stopword_removal, stemmer
-from LinkedList import LinkedList
+from linkedList import LinkedList
 from multiprocessing import Pool
 
 

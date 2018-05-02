@@ -122,7 +122,7 @@ def query_processing(query, dictionary, weight_matrix, filenames):
 """
 def query_search(query, dictionary, postings, idf):
 	# var init
-	query_vector, doc_candidates, rankings, relevant_scores, scores = [], [], [], [], []
+	query_vector, doc_candidates, rankings, scores = [], [], [], []
 
 	# search the word in the dictionary and locate the index of the word
 	for word in query:
@@ -163,9 +163,9 @@ def query_search(query, dictionary, postings, idf):
 		doc_vec_list = score_matrix[:, index]
 		scores.append(cos_sim(doc_vec_list, query_vector))
 
-	relevant_scores.append(zip(doc_candidates, scores))
-	print 'final relevant scores: ', relevant_scores
-
+	relevant_scores = zip(doc_candidates, scores)
+	relevant_scores = sorted(relevant_scores, key=lambda x: x[1], reverse=True)
+	return relevant_scores
 
 
 
