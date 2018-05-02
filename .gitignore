@@ -7,7 +7,7 @@ engine_core/testing/
 engine_core/temp/
 *.DS_store
 *.pyc
-*.txt
+project_description.txt
 
 # do not ignore these files
 !requirements.txt
