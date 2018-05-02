@@ -4,8 +4,6 @@
 # 2.pre-process the query and calc the length of query vector
 # 3.compute the tf-idf similarity scores
 
-from indexing import indexing
-from LinkedList import *
 from decimal import *
 from math import log10
 import numpy as np
@@ -150,22 +148,16 @@ def query_search(query, dictionary, postings, idf):
 		doc_candidates.sort()
 		rankings.append(zip(all_docs, tf_idf))
 
-	print 'ranking: ', rankings
-	print 'query_vector: ', query_vector
-
 	# append each idf to corresponding docment for that word
 	number_of_words_in_query = len(query_vector)
 	number_of_doc_candidates = len(doc_candidates)
+	# initiate matrix to store relevant scores
 	score_matrix = np.zeros(shape=(number_of_words_in_query, number_of_doc_candidates), dtype=np.float)
-
+	# record idf to the corresponding spot int the matrix
 	for row, ranking in enumerate(rankings):
-		print 'row:', row
 		for i in range(len(ranking)):
 			col = doc_candidates.index(ranking[i][0])
 			score_matrix[row][col] = ranking[i][1]
-
-	print 'documents candidates: ', doc_candidates
-	print 'score_matrix: ', score_matrix
 
 	for index, doc in enumerate(doc_candidates):
 		doc_vec_list = score_matrix[:, index]
