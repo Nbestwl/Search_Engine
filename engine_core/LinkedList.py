@@ -5,13 +5,15 @@ structure:
 2.term_freq : term frequency in that document
 3.next : acts as a pointer points to the next node
 '''
+import gunicorn.app.base
+
 
 """
 	pre: NONE
 	post: class for Node
 	return: NONE
 """
-class Node(object):
+class Node(gunicorn.app.base.BaseApplication):
 	def __init__(self, num, frequency, n = None):
 		self.doc_num = num
 		self.term_freq = frequency
@@ -41,7 +43,7 @@ class Node(object):
 	post: class for Linkedlist
 	return: NONE
 """
-class LinkedList(object):
+class LinkedList(gunicorn.app.base.BaseApplication):
 	def __init__(self, r = None):
 		self.root = r
 		self.cur = self.root
