@@ -41,7 +41,7 @@ def search():
 	# reading all index data from files
 	dictionary, postings, idf = read_data()
 
-	# print_table(dictionary, postings)
+	print_table(dictionary, postings)
 
 	while True:
 		query = raw_input(bcolors.BOLD + bcolors.OKGREEN + '\n\nEnter your query to search:(type q to quit search) \n'.upper() + bcolors.ENDC).lower()

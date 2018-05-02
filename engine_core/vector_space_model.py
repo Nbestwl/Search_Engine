@@ -124,8 +124,7 @@ def query_processing(query, dictionary, weight_matrix, filenames):
 """
 def query_search(query, dictionary, postings, idf):
 	# var init
-	query_vector = []
-	cos_sim_helper = []
+	query_vector, doc_candidates, rankings, relevant_scores, scores = [], [], [], [], []
 
 	# search the word in the dictionary and locate the index of the word
 	for word in query:
@@ -145,20 +144,36 @@ def query_search(query, dictionary, postings, idf):
 				# store the tf-idf, doc number and index of the word into a list for futher cosine similarity calc
 				for doc in all_docs:
 					# add another entry if the doc is not in the list
-					if doc not in cos_sim_helper:
-						cos_sim_helper.append(doc)
+					if doc not in doc_candidates:
+						doc_candidates.append(doc)
 
-		print all_docs, tf_idf
+		doc_candidates.sort()
+		rankings.append(zip(all_docs, tf_idf))
+
+	print 'ranking: ', rankings
 	print 'query_vector: ', query_vector
-	print 'cos_sim_helper: ', cos_sim_helper
+
+	# append each idf to corresponding docment for that word
+	number_of_words_in_query = len(query_vector)
+	number_of_doc_candidates = len(doc_candidates)
+	score_matrix = np.zeros(shape=(number_of_words_in_query, number_of_doc_candidates), dtype=np.float)
+
+	for row, ranking in enumerate(rankings):
+		print 'row:', row
+		for i in range(len(ranking)):
+			col = doc_candidates.index(ranking[i][0])
+			score_matrix[row][col] = ranking[i][1]
+
+	print 'documents candidates: ', doc_candidates
+	print 'score_matrix: ', score_matrix
+
+	for index, doc in enumerate(doc_candidates):
+		doc_vec_list = score_matrix[:, index]
+		scores.append(cos_sim(doc_vec_list, query_vector))
+
+	relevant_scores.append(zip(doc_candidates, scores))
+	print 'final relevant scores: ', relevant_scores
 
 
-def main():
-	v1 = [0.12493873660829993, 12493873660829993]
-	v2 = [0.12493873660829993, 12493873660829993]
-
-	print cos_sim(v1, v2)
 
 
-if __name__ == '__main__':
-	main()
