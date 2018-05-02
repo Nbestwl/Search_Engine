@@ -3,8 +3,8 @@
 /engine_core/docsnew/
 
 # ignore testing folder
-engine_core/testing/
-engine_core/temp/
+/engine_core/testing/
+/engine_core/temp/
 *.DS_store
 *.pyc
 project_description.txt

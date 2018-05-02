@@ -105,24 +105,9 @@ def spider(root_url, limit):
 
 	frontier, visited_repo = url_scraping(root_url, frontier, visited_repo, limit)
 	print "\nfrontier:", frontier.qsize()
-	print "\nvisited", visited_repo
 	print "\nvisited size: ", len(visited_repo)
 
 	mydir = './temp/'
 	init_dir(mydir)
 	file_writer(visited_repo, mydir)
 
-
-def main():
-	limit = 50
-	start = time.time()
-
-	root_url = 'http://www.leiwangcoding.com'
-	spider(root_url, limit)
-
-	end = time.time()
-	print 'elapsed time: ', end - start
-
-
-if __name__ == '__main__':
-	main()

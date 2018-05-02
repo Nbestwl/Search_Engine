@@ -1,5 +1,4 @@
 
-# This is the main file, it will process the documents using customized functions from each file and call everything in here.
 from pre_processing import *
 from indexing import *
 from vector_space_model import tf_idf
@@ -45,9 +44,9 @@ def setup():
 	# var init
 	posting_list = []
 
-	# limit = 10
 	start = time.time()
 
+	# limit = 50
 	# root_url = 'http://www.leiwangcoding.com'
 	# spider(root_url, limit)
 
@@ -58,18 +57,8 @@ def setup():
 	# create dictionary and postingsb
 	dictionary, postings = indexing(docs)
 
-	print_table(dictionary, postings)
-
-	# store posting lists in a dictionary
-	for posting in postings:
-		posting_list.append(posting.retrive_doc_freq())
-
-	print posting_list
-
-
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart building vector space model".upper() + bcolors.ENDC
 	idf = tf_idf(dictionary, filenames)
-	print idf
 
 	end = time.time()
 	print 'elapsed time: ', end - start

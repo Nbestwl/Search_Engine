@@ -29,13 +29,19 @@ def read_data():
 
 	return dictionary, postings_list, idf
 
+
+"""
+	pre: query string from web UI
+	post: sompare the query and calc the cosine similarity to get the relevant docs
+	return: a list of relevant docs
+"""
 def search():
 	# var init
 	dictionary, postings, idf = [], [], []
-
+	# reading all index data from files
 	dictionary, postings, idf = read_data()
 
-	print_table(dictionary, postings)
+	# print_table(dictionary, postings)
 
 	while True:
 		query = raw_input(bcolors.BOLD + bcolors.OKGREEN + '\n\nEnter your query to search:(type q to quit search) \n'.upper() + bcolors.ENDC).lower()
