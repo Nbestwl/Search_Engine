@@ -16,15 +16,12 @@ def results():
 	if request.method == 'POST':
 		query = request.form['search_query']
 
-		print type(query)
+		# convert unicode to string
 		query = unicodedata.normalize('NFKD', query).encode('ascii','ignore')
-		print query
-		print type(query)
-
+		# calculate cosine similarity between files and query
 		scores = search(query)
-		print scores
 
- 		return render_template("results.html")
+ 		return render_template("results.html", scores=scores)
 
 if __name__ == '__main__':
 	app.run(debug = True)
