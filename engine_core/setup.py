@@ -23,7 +23,7 @@ class bcolors:
 	post: helper function for writing data into a txt file
 	return: NONE
 """
-def write_data(dictionary, postings, idf):
+def write_data(dictionary, postings, idf, visited_repo):
 	with open('dictionary.txt', 'w') as filehandle:
 		json.dump(dictionary, filehandle)
 
@@ -34,6 +34,9 @@ def write_data(dictionary, postings, idf):
 		for i in idf:
 			filehandle.write('%s\n' % i)
 
+	with open('urls.txt', 'w') as f:
+		for i in visited_repo:
+			f.write('%s\n' % i)
 
 """
 	pre: NONE
@@ -42,13 +45,13 @@ def write_data(dictionary, postings, idf):
 """
 def setup():
 	# var init
-	posting_list = []
+	posting_list= []
 
 	start = time.time()
 
-	# limit = 50
-	# root_url = 'http://www.leiwangcoding.com'
-	# spider(root_url, limit)
+	limit = 100
+	root_url = 'https://www.pokemon.com/us/'
+	visited_repo = spider(root_url, limit)
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart pre-processing html tags".upper() + bcolors.ENDC
 	docs, filenames = tag_removal()
@@ -63,7 +66,7 @@ def setup():
 	end = time.time()
 	print 'elapsed time: ', end - start
 
-	write_data(dictionary, postings, idf)
+	write_data(dictionary, postings, idf, visited_repo)
 
 
 if __name__ == '__main__':

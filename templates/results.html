@@ -3,10 +3,25 @@
 	{{ super() }}
 {% endblock %}
 {% block footer %}
-	<h1 style="text-align: center">
+	<h1 style="text-align: center" class="text-primary">
 		Results
 	</h1>
-		<h1 style="text-align: center">
-			value
-		</h1>
+
+	<div class="list-group">
+		{% for i in scores %}
+				<ul class="list-group"></ul>
+				<a href={{i[2]}} class="list-group-item list-group-item-action flex-column align-items-start">
+					<div class="d-flex w-100 justify-content-between">
+						<h5 class="mb-1">web_url: {{i[2]}}</h5>
+						<small>cos_sim: {{i[1]}}</small>
+					</div>
+					<p class="mb-1">doc: {{i[0]}}</p>
+				</a>
+		{% endfor %}
+		{% if scores|length == 0 %}
+			<h1 style="text-align: center" class="text-primary">
+				no results
+			</h1>
+		{% endif %}
+	</div>
 {% endblock %}

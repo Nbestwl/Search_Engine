@@ -31,6 +31,7 @@ def init_dir(mydir):
 	return: None
 """
 def file_writer(urls, mydir):
+	new_urls = []
 	for index, url in enumerate(urls):
 		try:
 			page = requests.get(url, timeout=1)
@@ -42,7 +43,7 @@ def file_writer(urls, mydir):
 			filename = "_".join([basename, suffix])
 			with open(os.path.join(mydir, filename), "w") as file:
 				file.write(content.encode('utf-8'))
-
+			new_urls.append(url)
 		# catch the exception if any url is not responding
 		except Exception as e:
 			# print e.message
@@ -50,6 +51,7 @@ def file_writer(urls, mydir):
 		# indicate the crawling progress
 		progressbar(index, len(urls), prefix = 'Writing files:', length = 50)
 
+	return new_urls
 
 """
 	pre: a url
@@ -109,5 +111,7 @@ def spider(root_url, limit):
 
 	mydir = './temp/'
 	init_dir(mydir)
-	file_writer(visited_repo, mydir)
+	new_urls = file_writer(visited_repo, mydir)
+
+	return new_urls
 

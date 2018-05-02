@@ -120,9 +120,9 @@ def query_processing(query, dictionary, weight_matrix, filenames):
 	post: using dictionary to match the query index and retrieve doc and freq info from posting lists
 	return: ranked documents with cosine similarity
 """
-def query_search(query, dictionary, postings, idf):
+def query_search(query, dictionary, postings, idf, urls):
 	# var init
-	query_vector, doc_candidates, rankings, scores = [], [], [], []
+	query_vector, doc_candidates, rankings, scores, new_urls = [], [], [], [], []
 
 	# search the word in the dictionary and locate the index of the word
 	for word in query:
@@ -162,8 +162,9 @@ def query_search(query, dictionary, postings, idf):
 	for index, doc in enumerate(doc_candidates):
 		doc_vec_list = score_matrix[:, index]
 		scores.append(cos_sim(doc_vec_list, query_vector))
+		new_urls.append(urls[index].strip('\n'))
 
-	relevant_scores = zip(doc_candidates, scores)
+	relevant_scores = zip(doc_candidates, scores, new_urls)
 	relevant_scores = sorted(relevant_scores, key=lambda x: x[1], reverse=True)
 	return relevant_scores
 

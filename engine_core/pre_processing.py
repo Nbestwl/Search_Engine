@@ -65,7 +65,7 @@ def progressbar(iteration, total, prefix, length, fill=u'\u2588'):
 """
 def tag_removal():
 	# read in the sample files directory
-	rootdir = '/Users/silencer/Desktop/workspace/ir_project/search_engine/engine_core/testing/'
+	rootdir = '/Users/silencer/Desktop/workspace/ir_project/search_engine/engine_core/temp/'
 	# initilize an empty list to store all testing strings
 	docs = list()
 	filenames = list()
