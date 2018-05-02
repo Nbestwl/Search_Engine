@@ -1,10 +1,10 @@
 # -------------- custom ignore commands-------------
 # ignore html folder
-/docsnew/*
+/engine_core/docsnew/
 
 # ignore testing folder
-/testing/*
-/temp/*
+engine_core/testing/
+engine_core/temp/
 *.DS_store
 *.pyc
 *.txt
