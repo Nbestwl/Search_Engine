@@ -5,10 +5,10 @@
 # ignore testing folder
 /engine_core/testing/
 /engine_core/temp/
-/engine_core/dictionary.txt
-/engine_core/idf.txt
-/engine_core/urls.txt
-/engine_core/postings.pkl
+# /engine_core/dictionary.txt
+# /engine_core/idf.txt
+# /engine_core/urls.txt
+# /engine_core/postings.pkl
 
 *.DS_store
 *.pyc
