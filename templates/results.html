@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% block head %}
+	{{ super() }}
+{% endblock %}
+{% block footer %}
+	<h1 style="text-align: center">
+		Results
+	</h1>
+	{% for key, value in query.iteritems() %}
+		<h1 style="text-align: center">
+			{{ value }}
+		</h1>
+	{% endfor %}
+{% endblock %}
