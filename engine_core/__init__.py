@@ -5,7 +5,7 @@ import numpy as np
 from setup import bcolors
 from pre_processing import *
 from indexing import print_table
-from linkedList import LinkedList
+from engine_core.linkedList import LinkedList
 from vector_space_model import query_search
 
 
@@ -22,10 +22,17 @@ def read_data():
    	with open(abusolute_path+'/dictionary.txt') as f:
    		dictionary = json.load(f)
    	# reading postings to a list
-   	with open(abusolute_path+'/postings.pkl', 'rb') as input:
-   		postings = pickle.load(input)
-   		for posting in postings:
-  			postings_list.append(posting)
+   	# with open(abusolute_path+'/postings.pkl', 'rb') as input:
+   	# 	postings = pickle.loads(input)
+   	# 	for posting in postings:
+  		# 	postings_list.append(posting)
+
+	with open(abusolute_path+'/postings.pkl', 'rb') as input:
+	    while True:
+	        try:
+	            postings_list = pickle.load(input)
+	        except EOFError:
+	            break
   	# reading idf to a list
 	with open(abusolute_path+'/idf.txt') as filehandle:
 		for line in filehandle:

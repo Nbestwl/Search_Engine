@@ -108,4 +108,3 @@ class LinkedList(object):
 				message += 'Doc#: {} term_freq: {} -> '.format(start.get_doc(), start.get_freq())
 			start = start.get_next()
 		print message
-
