@@ -21,6 +21,8 @@ Information Retrieval (Spring 2018)
 
 #### 4.Implement a simple UI
 ###### Please feed the collected documents to the search engine that you implemented in step 2. Please implement a Web-based interface to take user queries and return answers (document names, snapshot with search term(s) highlighted, and URL) to the user. You only need to provide a reasonable (not so fancy) interface, you can use WYSIWYG editors to generate HTML. Keep this version of your search engine, since it will be compared with two future versions.
+- [x] Used Flask framework to render the UI as well as hosting the server.
+- [x] Used bootstrap to render and style the UI
 
 
 #### 5.Add term proximity into your scoring mechanism
