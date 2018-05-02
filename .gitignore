@@ -5,6 +5,11 @@
 # ignore testing folder
 /engine_core/testing/
 /engine_core/temp/
+/engine_core/index.txt
+/engine_core/idf.txt
+/engine_core/urls.txt
+/engine_core/postings.pkl
+
 *.DS_store
 *.pyc
 project_description.txt
