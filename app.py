@@ -19,7 +19,6 @@ def results():
 		query = unicodedata.normalize('NFKD', query).encode('ascii','ignore')
 		# calculate cosine similarity between files and query
 		scores = search(query)
-		print scores
 
  		return render_template("results.html", scores=scores)
 

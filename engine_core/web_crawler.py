@@ -25,6 +25,13 @@ def init_dir(mydir):
 		os.remove(os.path.join(mydir, f))
 
 
+def read_title_from(url):
+	page = requests.get(url, timeout=1)
+	soup = BeautifulSoup(page.text, "lxml")
+	title = soup.find_all('title')
+	return title
+
+
 """
 	pre: a list of urls
 	post: writing the html content into a file

@@ -5,6 +5,8 @@ from vector_space_model import tf_idf
 from web_crawler import spider
 import json
 import pickle
+import re
+from indexing import print_table
 
 
 class bcolors:
@@ -38,6 +40,18 @@ def write_data(dictionary, postings, idf, visited_repo):
 		for i in visited_repo:
 			f.write('%s\n' % i)
 
+
+def re_arrange_urls(filenames):
+	urls = []
+	for file in filenames:
+		temp = re.sub('\.html$', '', file)
+		temp = re.sub('Doc_', '', temp)
+		urls.append(temp)
+
+	return urls
+
+
+
 """
 	pre: NONE
 	post: setup the index and related posting lists and idf for future search
@@ -50,16 +64,22 @@ def setup():
 	start = time.time()
 
 	limit = 100
-	root_url = 'https://www.pokemon.com/us/'
+	root_url = 'http://www.leiwangcoding.com'
 	visited_repo = spider(root_url, limit)
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart pre-processing html tags".upper() + bcolors.ENDC
 	docs, filenames = tag_removal()
+	indexes = re_arrange_urls(filenames)
+	indexes = map(int, indexes)
+	visited_repo = [x for i, x in sorted(zip(indexes, visited_repo))]
+
+
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart buidling dictionary and postings".upper() + bcolors.ENDC
 	# create dictionary and postingsb
 	dictionary, postings = indexing(docs)
 
+	print_table(dictionary, postings)
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart building vector space model".upper() + bcolors.ENDC
 	idf = tf_idf(dictionary, filenames)
 
