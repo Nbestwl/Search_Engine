@@ -10,6 +10,7 @@ from stemming.porter2 import stem
 #nltk is the third party library we are using for stop words and stems.
 from stop_words import get_stop_words
 import os
+import os.path
 # imported for tag removal
 import re
 
@@ -65,7 +66,8 @@ def progressbar(iteration, total, prefix, length, fill=u'\u2588'):
 """
 def tag_removal():
 	# read in the sample files directory
-	rootdir = '/Users/silencer/Desktop/workspace/ir_project/search_engine/engine_core/temp/'
+	abusolute_path = os.path.abspath(os.path.dirname(__file__))
+	rootdir = abusolute_path + '/temp'
 	# initilize an empty list to store all testing strings
 	docs = list()
 	filenames = list()

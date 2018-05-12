@@ -6,6 +6,7 @@ from web_crawler import spider
 import json
 import pickle
 import re
+import sys
 from indexing import print_table
 
 
@@ -63,15 +64,15 @@ def setup():
 
 	start = time.time()
 
-	limit = 100
+	limit = int(sys.argv[1])
 	root_url = 'http://www.leiwangcoding.com'
 	visited_repo = spider(root_url, limit)
 
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart pre-processing html tags".upper() + bcolors.ENDC
 	docs, filenames = tag_removal()
-	indexes = re_arrange_urls(filenames)
-	indexes = map(int, indexes)
-	visited_repo = [x for i, x in sorted(zip(indexes, visited_repo))]
+	# indexes = re_arrange_urls(filenames)
+	# indexes = map(int, indexes)
+	# visited_repo = [x for i, x in sorted(zip(indexes, visited_repo))]
 
 
 
@@ -79,7 +80,7 @@ def setup():
 	# create dictionary and postingsb
 	dictionary, postings = indexing(docs)
 
-	print_table(dictionary, postings)
+	# print_table(dictionary, postings)
 	print bcolors.BOLD + bcolors.OKGREEN + "\n\nstart building vector space model".upper() + bcolors.ENDC
 	idf = tf_idf(dictionary, filenames)
 

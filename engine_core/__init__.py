@@ -8,6 +8,7 @@ from indexing import print_table
 from engine_core.linkedList import LinkedList
 from vector_space_model import query_search
 from web_crawler import read_title_from
+import time
 
 """
 	pre: NONE
@@ -52,11 +53,14 @@ def search(query):
 	# reading all index data from files
 	dictionary, postings, idf, urls = read_data()
 
+	start = time.time()
 	processed_query = stopword_removal(query)
 	processed_query = stemmer(processed_query)
 	similarity_score = query_search(processed_query, dictionary, postings, idf, urls)
 
 	return similarity_score
+	end = time.time()
+	print 'elapsed time: ', end - start
 
 
 """
@@ -78,6 +82,7 @@ def main():
 			print "goodbye!"
 			exit()
 		else:
+			start = time.time()
 			print bcolors.BOLD + bcolors.OKGREEN + "\n\ncalculating document rankings".upper() + bcolors.ENDC
 			processed_query = stopword_removal(query)
 			processed_query = stemmer(processed_query)
@@ -85,7 +90,11 @@ def main():
 		# similarity_score = query_processing(processed_query, dictionary, weight_matrix, filenames)
 		similarity_score = query_search(processed_query, dictionary, postings, idf, urls)
 		print similarity_score
+		end = time.time()
+		print 'elapsed time: ', end - start
 
 
 if __name__ == '__main__':
 	main()
+
+

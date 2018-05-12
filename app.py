@@ -11,7 +11,8 @@ def index():
 
 @app.route('/results', methods=['POST'])
 def results():
-	# if the user inputs a query, grab the query and feed in to the search method to calulate similarity score
+	# if the user inputs a query, grab the query and feed in to the search
+	# method to calulate similarity score
 	if request.method == 'POST':
 		query = request.form['search_query']
 
@@ -24,3 +25,4 @@ def results():
 
 if __name__ == '__main__':
 	app.run(debug = True)
+
